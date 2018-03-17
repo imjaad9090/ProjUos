@@ -1,0 +1,39 @@
+{
+  "name": "Wick",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "react": "~16.2.0",
+    "react-native": "0.53.0",
+    "react-native-carrier-info": "^1.0.1",
+    "react-native-drawer": "^2.5.0",
+    "react-native-fetch-blob": "^0.10.8",
+    "react-native-firebase": "^3.2.7",
+    "react-native-geo-fencing": "^0.1.0",
+    "react-native-gifted-chat": "^0.3.0",
+    "react-native-image-crop-picker": "^0.20.0",
+    "react-native-indicators": "^0.11.1",
+    "react-native-linear-gradient": "^2.4.0",
+    "react-native-loading-spinner-overlay": "^0.5.2",
+    "react-native-material-textfield": "^0.12.0",
+    "react-native-off-canvas-menu": "^0.1.31",
+    "react-native-simple-drawer": "^0.4.5",
+    "react-native-timeago": "^0.4.0",
+    "react-native-vector-icons": "^4.5.0",
+    "react-navigation": "^1.0.3",
+    "react-timeago": "^3.4.3"
+  },
+  "devDependencies": {
+    "babel-jest": "22.2.2",
+    "babel-preset-react-native": "4.0.0",
+    "jest": "22.3.0",
+    "react-test-renderer": "16.2.0"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}

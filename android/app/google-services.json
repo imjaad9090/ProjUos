@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1036338222382",
+    "firebase_url": "https://unichatio-f63db.firebaseio.com",
+    "project_id": "unichatio-f63db",
+    "storage_bucket": "unichatio-f63db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1036338222382:android:7d4b6eea644176e6",
+        "android_client_info": {
+          "package_name": "com.wick"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1036338222382-psnboufb734h4rhvuteno1bpekute6oi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wick",
+            "certificate_hash": "9c47b69bc0fcaa01d77c832302aae50f6b5a5abe"
+          }
+        },
+        {
+          "client_id": "1036338222382-q15cmgonqgubbduvnqmsrosisdab6u9l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvOrt3JBvyjRsKmMa3VNc16KhGTUxOSyw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1036338222382-q15cmgonqgubbduvnqmsrosisdab6u9l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
