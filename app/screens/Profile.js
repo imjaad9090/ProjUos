@@ -1,23 +1,24 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Button,Image,TouchableOpacity,TextInput,Alert,Platform } from 'react-native';
+import { View, Text, StyleSheet, Button,StatusBar,Image,TouchableOpacity,TextInput,Alert,AsyncStorage,Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Drawer from 'react-native-drawer'
 import Register from './Register';
 import PropTypes from 'prop-types';
 import TimeAgo from 'react-native-timeago';
 import firebase from 'react-native-firebase';
-
 import ImagePicker from 'react-native-image-crop-picker';
 
 
 // create a component
-class Login extends Component {
-    static navigationOptions = {
+class Login extends React.Component {
+    static navigationOptions =  {
+        
+        
     }
-
     constructor(){
         super()
+
         this.state={
             uri: 'https://im2.ezgif.com/tmp/ezgif-2-0a0115986d.png',
             basestring:null,
@@ -35,10 +36,13 @@ class Login extends Component {
 const { navigate } = this.props.navigation;
 var user = firebase.auth().currentUser;
 
-firebase.auth().signOut().then(function() {
-this.props.navigation.navigate('login')
-
+firebase.auth().signOut().then(async function() {
+    var status = AsyncStorage.getItem('userToken')
+    console.log(status)
+     AsyncStorage.removeItem('userToken');
+    navigate('Auth');
 }, function(error) {
+    alert(error)
             // An error happened.
           });
 
@@ -61,6 +65,7 @@ Alert.alert('profile updated.')
 });
     }
      componentDidMount(){
+        StatusBar.setHidden(true);
 
         var user = firebase.auth().currentUser;
         if (user != null) {
@@ -119,7 +124,9 @@ Alert.alert('profile updated.')
           
     }
 
-    render() {
+    render()  {
+        const { navigation } = this.props;
+
         return (
          
           <View style={styles.container}>

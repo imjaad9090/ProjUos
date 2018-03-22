@@ -53,7 +53,6 @@ class Chat extends Component {
                 var avatar = 'https://www.gravatar.com/avatar/' + ( child.val().uid == user.uid? md5(user.email) : md5(params.gomail))
                 var username = params.name
                 var imagelink = params.goimage
-                this.setState({userName:username})
                 console.log(username)
                 items.push({
                     _id: child.val().createdAt,
@@ -61,6 +60,7 @@ class Chat extends Component {
                     name: JSON.stringify(username),
                     createdAt: new Date(child.val().createdAt),
                     user: {
+                        //aded
                         _id: child.val().uid,
                         name: username,
                         avatar: imagelink, 

@@ -1,17 +1,14 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Button,TouchableOpacity,TextInput,Alert,AsyncStorage } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { View,TouchableWithoutFeedback, Text, StyleSheet,Picker,Keyboard,Button,TouchableOpacity,KeyboardAvoidingView,TextInput,Alert,AsyncStorage,ImageBackground } from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
 import Drawer from 'react-native-drawer'
 import PropTypes from 'prop-types';
-import CarrierInfo from 'react-native-carrier-info';
-import LinearGradient from 'react-native-linear-gradient';
 import firebase from 'react-native-firebase';
-import { TextField } from 'react-native-material-textfield';
-import GeoFencing from 'react-native-geo-fencing';
+import { Dropdown } from 'react-native-material-dropdown';
 
 // create a component
-class Register extends Component {
+class Register extends React.Component {
     static navigationOptions = {
         header:null
     }
@@ -22,17 +19,21 @@ class Register extends Component {
             email:'',
             password:'',
             username:'',
-            role:''
+            role:'Student'
         }
     }
 
-    register(){
-        const { navigate } = this.props.navigation;
+     register(){
+        const { navigate,pop } = this.props.navigation;
 
         var db = firebase.database().ref();
 
         const { email, password } = this.state;
-        firebase.auth().createUserWithEmailAndPassword(email, password)
+
+
+        if(this.state.email != '' && this.state.password.length >=6 & this.state.username != '')
+        {
+            firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(() => {
             var user = firebase.auth().currentUser;
 
@@ -42,7 +43,7 @@ firebase.database().ref().child('Accounts').child(user.uid).set({
     uid: user.uid,
     name: this.state.username,
     role: this.state.role,
-    image:" "
+    image:"https://firebasestorage.googleapis.com/v0/b/unichatio-f63db.appspot.com/o/ghost.png?alt=media&token=5b97d67e-b109-402d-8d07-657f221b9c47"
 })
         {/*db.child('Users').push({
             email: this.state.email,
@@ -60,89 +61,78 @@ firebase.database().ref().child('Accounts').child(user.uid).set({
 
 
 var user = firebase.auth().currentUser;
-user.sendEmailVerification().then(function() {
-    console.log('email has been sent')
-      }).catch(function(error) {
 
-        alert('ops we were unable to send confirmation email')
-    });
+user.sendEmailVerification().then(async function() {
+    console.log('email has been sent')
+    await AsyncStorage.setItem('userToken', 'LoggedIn');
+    Alert.alert('Verify Email','A verification email has been sent to your inbox, please verify yourself and log in.')
+    //navigate('App');
+    pop()
+      })
 console.log(user)
-navigate('profile')
-          })
+          
+ }).catch(function(error) {
+
+    var showErr = JSON.stringify(error.message)
+    Alert.alert('Ohh Snapp..',showErr)
+
+});
+
+}
+else {
+    alert('One of the fields are empty or password is less than 6 characters')
+}
         
     }
-     componentDidMount(){
-        
-        const polygon = [
-            { lat: 31.52312970169497, lng:74.32199478149413 },
-            { lat: 31.52077011411445, lng: 74.3208360671997 },
-            { lat: 31.516325147731852, lng: 74.32474136352539 },
-            { lat: 31.519489692808282, lng: 74.3291187286377 },
-            { lat: 31.523916217643997, lng: 74.32729482650757 },
-            { lat: 31.52312970169497, lng:74.32199478149413 }
-          ];
-
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              let point = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-              };
-        
-              GeoFencing.containsLocation(point, polygon)
-                .then(() => console.log('inside'))
-                .catch(() => console.log('outt'))
-            },
-            (error) => alert(error.message),
-            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-          );
-     }
-
+     
     render() {
         const { navigate,pop } = this.props.navigation;
-
+        let data = [{
+            value: 'Student',
+          }, {
+            value: 'Teacher',
+          }];
         return (
-            <LinearGradient colors={['#00BBF0','#00204A']} style={styles.container}>
+        <KeyboardAvoidingView behavior="padding">
+           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+           <ImageBackground source={require('./Images/23.png')}  style={styles.bgImage}>
 
-          <View>
+        <View style={{alignSelf:'center',bottom:10}}>
 
-            <Button title="Login" onPress={()=>pop()} />
+        <Icon name="info" size={30} color="white" onPress={()=>Alert.alert('Just a moment','Unichat team cares for your privacy, a verfication link will be sent to your email for authentication purposes. Once verified you will be able to log into the application.')} />
+        </View>
+          <Dropdown
+          label="I am here as"
+          animationDuration={100}
+          value={this.state.role}
+          fontSize={15}
+          overlayStyle={{backgroundColor:'rgba(0,0,0,0.2)'}}
+            containerStyle={{width:280,backgroundColor:'white',padding:5,borderRadius:6,borderWidth:2}}
+            onChangeText={(itemValue, itemIndex) =>
+            this.setState({ role: itemValue,show:true })}        
+            data={data}
+      />
 
-          <Text>{this.state.carrier}</Text>
-                <Text>{this.state.netcode}</Text>
-          <Text>{this.state.latitude}</Text>
-          <Text>{this.state.longitude}</Text>
-
-
-            <TextInput
-                style={styles.input}
-                //value={this.state.email}
-                onChangeText={(role) => this.setState({role})}
-                multiline={false}
-                placeholder="Student / Teacher ?"
-                autoCapitalize="none"
-                autoCorrect={false}
-                returnKeyType="next"
-                underlineColorAndroid="transparent"
-                placeholderTextColor="#bdc3c7"
-
-              />
 
         <TextInput
                 style={styles.input}
                 //value={this.state.email}
                 onChangeText={(username) => this.setState({username})}
                 multiline={false}
-                placeholder="Username"
+                placeholder="What should we call you"
                 autoCapitalize="none"
                 autoCorrect={false}
                 returnKeyType="next"
                 underlineColorAndroid="transparent"
                 placeholderTextColor="#bdc3c7"
+                onSubmitEditing={(event) => { 
+                    this.refs.two.focus(); 
+                  }}
 
               />
 
           <TextInput
+          ref="two"
                 style={styles.input}
                 //value={this.state.email}
                 onChangeText={(email) => this.setState({email})}
@@ -154,14 +144,16 @@ navigate('profile')
                 returnKeyType="next"
                 underlineColorAndroid="transparent"
                 placeholderTextColor="#bdc3c7"
-
+                onSubmitEditing={(event) => { 
+                    this.refs.three.focus(); 
+                  }}
               />
 
 
 
               <TextInput
         style={styles.input}
-//value={this.state.email}
+        ref="three"
         onChangeText={(password) => this.setState({password})}
         multiline={false}
         placeholder="Password"
@@ -173,10 +165,24 @@ navigate('profile')
         placeholderTextColor="#bdc3c7"
 
 />
-          <Button title="Signup" onPress={() =>this.register()}/>
-          </View>
-          </LinearGradient>
-        );
+
+       <TouchableOpacity activeOpacity={0.8} onPress={()=>this.register()} style={{backgroundColor:'white',borderRadius:19,width:'75%',height:40,alignItems:'center',justifyContent:'center',marginVertical:10}}>
+                <Text style={{fontWeight:"700",fontSize:15,includeFontPadding:true,color:'#3d1767'}}>SIGN UP</Text>
+            </TouchableOpacity>
+
+
+            <View style={{flexDirection:'row'}}>
+            <Text style={{color:'#fff',fontWeight:'200',fontSize:15,top:10}} onPress={()=>pop()}>Already have an account?</Text>
+            </View>
+
+
+
+
+</ImageBackground>
+</TouchableWithoutFeedback>
+</KeyboardAvoidingView>
+
+);
     }
 }
 
@@ -189,17 +195,28 @@ const styles = StyleSheet.create({
     paddingRight: 15
     },
     input: {
-
+        marginVertical:5,
         height: 40,
         padding:8,
-        borderColor:'rgba(52, 52, 52, 0.0)',
-        borderRadius: 2,
-        marginTop:5,
-        width:'100%',
+        borderWidth:2,
+        borderColor:'rgba(0, 0, 0, 0.2)',
+        borderRadius: 6,
+        width:'75%',
         backgroundColor:'white',
         fontSize: 16,
         //color: "#2c3e50"
       },
+
+      bgImage:{
+          width:'100%',
+          height:'100%',
+          justifyContent:'center',
+          alignItems:'center'
+      }
+
+
+
+
 });
 
 //make this component available to the app

@@ -8,7 +8,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 // create a component
-class Public extends Component {
+class PT extends Component {
 
     constructor(props){
         super(props)
@@ -19,20 +19,20 @@ class Public extends Component {
             messages:[],
             id:user.uid
           };
-        this.chatRef = firebase.database().ref().child('Lounge/');
+        this.chatRef = firebase.database().ref().child('PT/');
         this.chatRefData = this.chatRef.orderByChild('order')
         this.onSend = this.onSend.bind(this);
     }
 
 
     static navigationOptions=({ navigation })=>({
-        title: 'Lounge fu',  
-        headerTintColor: 'white', 
+        title: 'Physical Therapy',  
+        //headerTintColor: 'white', 
         headerStyle:{
-        backgroundColor:'#0F3057'
+        backgroundColor:'#eee'
         },
         headerTitleStyle:{
-            color:'white'
+            color:'black'
         }
     })
 
@@ -43,19 +43,15 @@ class Public extends Component {
         const { params } = this.props.navigation.state;
         var user = firebase.auth().currentUser;
         chatRef.on('value', (snap) => {
-
             // get children as an array
             var items = [];
             snap.forEach((child) => {
-               // console.log(child)
                 items.push({
-                    createdAt: new Date(child.val().createdAt),
-                    name: child.val().name,
-                    text: child.val().text,
                     _id: child.val().createdAt,
-                    
-                    
+                    text: child.val().text,
+                    name: child.val().name,
                     avatar: child.val().userimage, 
+                    createdAt: new Date(child.val().createdAt),
                     user: {
                         //aded
                         _id: child.val().uid,
@@ -63,7 +59,6 @@ class Public extends Component {
                         avatar: child.val().userimage, 
 
                     }
-                
                 });
             });
 
@@ -138,7 +133,7 @@ class Public extends Component {
 
     render() {
         return (
-            <LinearGradient colors={['#076585','#fff']} style={styles.container}>
+            <LinearGradient colors={['#ad5389','#3c1053']} style={styles.container}>
          <Spinner visible={this.state.visible}/>
 
             <GiftedChat
@@ -163,4 +158,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default Public;
+export default PT;

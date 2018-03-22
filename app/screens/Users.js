@@ -1,15 +1,21 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Button,FlatList,Image,TouchableOpacity } from 'react-native';
+import { View, StyleSheet,Button,FlatList,Image,TouchableOpacity } from 'react-native';
 import firebase from 'react-native-firebase';
+import Spinner from 'react-native-loading-spinner-overlay';
+import { Container, Header, Content, Card, CardItem, Thumbnail,Text, Left, Body, Right } from 'native-base';
+
 
 // create a component
-class Users extends Component {
+class Users extends React.Component {
 constructor(){
     super()
     this.state={
+        visible: true,
         store:[]
     }
+    this.userR = firebase.database().ref('Accounts/');
+        this.user = firebase.auth().currentUser;
 
 }
 
@@ -21,43 +27,63 @@ showUsers(){
         var userR = firebase.database().ref('Accounts/');
         var user = firebase.auth().currentUser;
 
-        userR.on('value', function(snapshot) {
-            snapshot.forEach((child)=>{
-                if(child.val().email != user.email)
-
-              //var childData = childSnapshot.val();
-              currentComponent.store.push({
-                name: child.val().name,
-                email: child.val().email,
-                role:  child.val().role,
-                id: child.val().uid,
-                image: child.val().image
-              })
-
-              //console.log(this.state.store)
-              
-            });
-            console.log(currentComponent.store)
-            console.log(currentComponent.store.length)
-
-            
-        });      
+        
+        console.log(store)
+        this.setState({store:store})    
 }
 
 showImage(props){
    
-    return <Image source={{uri: props}} style={{width:50,height:50,resizeMode:'contain'}} />
+    return <Image source={{uri: props}} style={{alignSelf:'center',borderRadius:50,width:50,height:50}} />
 
 }
-    componentWillMount(){
-        this.showUsers()
-  
+
+
+getData(){
+this.setState({visible:true})
+    var userR = firebase.database().ref('Accounts/');
+       var user = firebase.auth().currentUser;
+
+       userR.on('value', (snap) =>{
+        var mid =[];
+
+        snap.forEach((child)=>{
+            if(child.val().email != user.email)
+          //var childData = childSnapshot.val();
+          mid.push({
+            name: child.val().name,
+            email: child.val().email,
+            role:  child.val().role,
+            id: child.val().uid,
+            image: child.val().image
+          })
+
+
+          //console.log(this.state.store)
+          
+        });
+        this.setState({store:mid,visible:false})
 
         
+    });  
+
+}
+
+
+componentDidMount(){
+    
+}
+
+
+
+
+     async componentWillMount(){
+       console.log('will mount ran')
+       this.getData()
+ 
     }
 
-    componentDidMount(){
-    }
+    
 
 
     render() {
@@ -65,23 +91,24 @@ showImage(props){
 
         return (
             <View style={styles.container}>
-            <Text>Total Pals : 0</Text>
+                     <Spinner visible={this.state.visible}/>
+
             <FlatList
               keyExtractor={(item, index) => index.toString()}
               data={this.state.store}
               renderItem={({ item }) => (
-                <TouchableOpacity onPress={()=>this.props.navigation.navigate('chat',{name:item.name,goid:item.id,gomail:item.email,goimage:item.image})}>
-                <View style={{width:'100%',height:90,marginVertical:6,borderColor:'#000',borderRadius:3,borderWidth:2,height:150,padding:5}}>
-
-                {this.showImage(item.image)}
-
-                <Text>Name : {item.name}</Text>
-
-                <Text>Email : {item.email}</Text>
-                <Text>Role : {item.role}</Text>
-                <Text>User id : {item.id}</Text>
- 
-                </View>
+                <TouchableOpacity activeOpacity={0.9} onPress={()=>this.props.navigation.navigate('chat',{name:item.name,goid:item.id,gomail:item.email,goimage:item.image})}>
+          <Card>
+            <CardItem>
+              <Left>
+                <Thumbnail source={{uri: item.image}} />
+                <Body>
+                  <Text>{item.name}</Text>
+                  <Text note>{item.role}</Text>
+                </Body>
+              </Left>
+            </CardItem>
+            </Card>
                 </TouchableOpacity>
               )}
             />            
@@ -94,8 +121,8 @@ showImage(props){
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding:10,
-        backgroundColor: '#eee',
+        padding:2,
+        backgroundColor: '#08415C',
     },
 });
 

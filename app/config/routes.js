@@ -1,7 +1,7 @@
 import React from 'react';
-import { StackNavigator,TabNavigator,DrawerNavigator, } from 'react-navigation';
+import { StackNavigator,TabNavigator,DrawerNavigator } from 'react-navigation';
+import {SwitchNavigator} from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
 import Home from '../screens/Home';
 import Users from '../screens/Users';
 import Groups from '../screens/Groups';
@@ -12,9 +12,13 @@ import Profile from '../screens/Profile';
 import Forget from '../screens/Forget';
 import Chat from '../screens/Chat';
 import Public from '../screens/Public';
+import CS from '../screens/CS';
+import PT from '../screens/PT';
+import BD from '../screens/BD';
+import Authloading from '../screens/Authloading';
 
 
-export const Stack = StackNavigator({
+export const AppStack = StackNavigator({
     tabs : {screen: TabNavigator(
         {
         Home : {
@@ -73,16 +77,19 @@ export const Stack = StackNavigator({
           }
     })
 },
-
-
 loo:{screen:Home},
-chat : {screen : Chat}
+chat : {screen : Chat},
+cs : {screen : CS},
+pt : {screen : PT},
+bd : {screen : BD}
 });
 
-
-   export const Auth = StackNavigator({
+   export const AuthStack = StackNavigator({
        login : {screen : Login},
        register : {screen : Register},
        location : {screen : Location},
        forget : {screen : Forget}
-   })
+   }, 
+  )
+
+   
