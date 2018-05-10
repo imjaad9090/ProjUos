@@ -28,12 +28,12 @@ class Chat extends Component {
 
     static navigationOptions=({ navigation })=>({
         title: `${navigation.state.params.name}`,  
-        headerTintColor: 'white', 
+        headerTintColor: '#2a0845', 
         headerStyle:{
-            backgroundColor:'#0F3057'
+            backgroundColor:'#F2F9FF'
         },
         headerTitleStyle:{
-            color:'white'
+            color:'#2a0845'
         }
     })
 
@@ -132,7 +132,7 @@ class Chat extends Component {
 
     render() {
         return (
-            <LinearGradient colors={['#076585','#fff']} style={styles.container}>
+            <View style={styles.container}>
          <Spinner visible={this.state.visible}/>
 
             <GiftedChat
@@ -144,7 +144,7 @@ class Chat extends Component {
                     name: this.state.userName
                 }}
                 />
-      </LinearGradient>
+      </View>
         );
     }
 }
@@ -153,7 +153,7 @@ class Chat extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    
+        backgroundColor:'#F2F9FF'
     },
 });
 

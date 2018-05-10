@@ -10,6 +10,15 @@ import Spinner from 'react-native-loading-spinner-overlay';
 // create a component
 class Public extends Component {
 
+    static navigationOptions =({ navigation }) =>{
+        title:'Lounge'
+        
+        headerStyle:{
+        backgroundColor:'#F2F9FF'
+        }
+        
+    }
+
     constructor(props){
         super(props)
         var user = firebase.auth().currentUser;
@@ -27,12 +36,11 @@ class Public extends Component {
 
     static navigationOptions=({ navigation })=>({
         title: 'Lounge fu',  
-        headerTintColor: 'white', 
         headerStyle:{
-        backgroundColor:'#0F3057'
+        backgroundColor:'#F2F9FF'
         },
         headerTitleStyle:{
-            color:'white'
+            color:'#2a0845'
         }
     })
 
@@ -138,7 +146,7 @@ class Public extends Component {
 
     render() {
         return (
-            <LinearGradient colors={['#076585','#fff']} style={styles.container}>
+            <View style={styles.container}>
          <Spinner visible={this.state.visible}/>
 
             <GiftedChat
@@ -149,7 +157,7 @@ class Public extends Component {
                     _id: this.state.id,
                 }}
                 />
-      </LinearGradient>
+      </View>
         );
     }
 }
@@ -158,7 +166,7 @@ class Public extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    
+    backgroundColor:'#F2F9FF'
     },
 });
 

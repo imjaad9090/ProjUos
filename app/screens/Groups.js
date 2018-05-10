@@ -6,6 +6,16 @@ import LinearGradient from 'react-native-linear-gradient';
 // create a component
 class Groups extends Component {
 
+    static navigationOptions =({ navigation }) =>{
+        title:'Groups'
+        
+        headerStyle:{
+        backgroundColor:'#F2F9FF'
+        }
+        
+    }
+
+
     constructor(){
         super()
 

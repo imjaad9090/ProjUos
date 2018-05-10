@@ -1,11 +1,20 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, StyleSheet,ScrollView,Image,Text} from 'react-native';
+import { View, StyleSheet,ScrollView,Image,Text,AsyncStorage} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather'
 import { Container, Header, Content, List,Button, ListItem,H3,H2,Left, Body, Right, Switch } from 'native-base';
+import firebase from 'react-native-firebase';
 
 // create a component
 class sidebar extends Component {
+
+
+  logout(){
+    alert('storm')
+
+  }
+
+
     render() {
         return (
             <View style={styles.container}>
@@ -76,7 +85,7 @@ class sidebar extends Component {
             </ListItem>
 
 
-        <ListItem icon>
+        <ListItem onPress={()=>this.logout()} icon>
               <Left>
                 <Icon name="log-out" size={21} color="#0F3057" />
               </Left>

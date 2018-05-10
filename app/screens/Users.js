@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, StyleSheet,Button,FlatList,Image,TouchableOpacity } from 'react-native';
+import { View, StyleSheet,Button,FlatList,Image,TouchableOpacity,AsyncStorage } from 'react-native';
 import firebase from 'react-native-firebase';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Container, Header, Content, Card, CardItem, Thumbnail,Text, Left, Body, Right } from 'native-base';
@@ -8,6 +8,16 @@ import { Container, Header, Content, Card, CardItem, Thumbnail,Text, Left, Body,
 
 // create a component
 class Users extends React.Component {
+
+    static navigationOptions =({ navigation }) =>{
+        title:'Friends'
+        
+        headerStyle:{
+        backgroundColor:'#F2F9FF'
+        }
+        
+    }
+
 constructor(){
     super()
     this.state={
@@ -18,6 +28,18 @@ constructor(){
         this.user = firebase.auth().currentUser;
 
 }
+
+componentDidMount(){
+    
+
+
+}
+
+
+componentWillUnmount(){
+    console.log('unmounted')
+}
+
 
 showUsers(){
     let currentComponent = this.state;
@@ -39,26 +61,33 @@ showImage(props){
 }
 
 
-getData(){
+async getData(){
 this.setState({visible:true})
     var userR = firebase.database().ref('Accounts/');
        var user = firebase.auth().currentUser;
-
+        
        userR.on('value', (snap) =>{
         var mid =[];
 
         snap.forEach((child)=>{
-            if(child.val().email != user.email)
+            if(child.val().uid != user.uid)
+            
+            {
+            console.log(child)
           //var childData = childSnapshot.val();
           mid.push({
             name: child.val().name,
             email: child.val().email,
             role:  child.val().role,
             id: child.val().uid,
-            image: child.val().image
+            image: child.val().image,
+            status: JSON.stringify(child.val().online)
           })
-
-
+}
+else {
+    console.log('not one of us')
+}
+          console.log(mid)
           //console.log(this.state.store)
           
         });
@@ -70,28 +99,40 @@ this.setState({visible:true})
 }
 
 
-componentDidMount(){
-    
-}
-
-
-
 
      async componentWillMount(){
+        var user = firebase.auth().currentUser;
+        var database = firebase.database();
+
+        
+
+
        console.log('will mount ran')
+       var mymail= await AsyncStorage.getItem('myEmail')
+
+
+        this.setState({thismail:JSON.parse(mymail)})
        this.getData()
  
     }
 
+      onlineStatus(props){
+          if(props == 'true'){
+       return <Image source={require('./Images/online.png')} style={{width:10,height:10,resizeMode:'contain'}} />
     
+    }
+    else if(props == 'false') {
+        return <Image source={require('./Images/offline.png')} style={{width:10,height:10,resizeMode:'contain'}} />
+    }
+
+}
 
 
     render() {
         let currentComponent = this.state;
-
         return (
             <View style={styles.container}>
-                     <Spinner visible={this.state.visible}/>
+            <Spinner visible={this.state.visible}/>
 
             <FlatList
               keyExtractor={(item, index) => index.toString()}
@@ -107,6 +148,11 @@ componentDidMount(){
                   <Text note>{item.role}</Text>
                 </Body>
               </Left>
+              <Right>
+                 <View>
+                
+                  </View>
+              </Right>
             </CardItem>
             </Card>
                 </TouchableOpacity>
@@ -122,7 +168,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding:2,
-        backgroundColor: '#08415C',
+        backgroundColor: '#e8e8e8',
     },
 });
 

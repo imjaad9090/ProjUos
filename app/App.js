@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import Authloading from './screens/Authloading';
 import { SwitchNavigator,StackNavigator,TabNavigator,DrawerNavigator } from "react-navigation";
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import sidebar from './screens/sidebar';
 import Home from './screens/Home';
 import Users from './screens/Users';
@@ -44,7 +44,7 @@ const TabStack = TabNavigator(
                 <View><Icon name="bars" size={26} color="#0F3057" onPress={()=>navigation.navigate('DrawerOpen')}/></View>
             ),
             tabBarLabel: 'Home',
-            tabBarIcon: ({ tintColor }) => <Icon name="music" size={25} color={tintColor} />
+            tabBarIcon: ({ tintColor }) => <Icon name='account-circle' size={25} color={tintColor} />
         })
     },
     Friends : {
@@ -52,7 +52,7 @@ const TabStack = TabNavigator(
         navigationOptions: {
             headerTitle:'Friends',
             tabBarLabel: 'Users',
-            tabBarIcon: ({ tintColor }) => <Icon name="comments" size={25} color={tintColor} />
+            tabBarIcon: ({ tintColor }) => <Icon name="people" size={25} color={tintColor} />
         }
     },
     Groups : { 
@@ -60,15 +60,16 @@ const TabStack = TabNavigator(
         navigationOptions: {
             headerTitle:'Groups',
             tabBarLabel: 'Groups',
-            tabBarIcon: ({ tintColor }) => <Icon name="phone" size={25} color={tintColor} />
+            tabBarIcon: ({ tintColor }) => <Icon name="account-balance" size={25} color={tintColor} />
         }
     },
     Public : {
         screen : Public,
         navigationOptions: {
-            headerTitle:"Public",
+
+            //headerTitle:"Public",
             tabBarLabel: "Public",
-            tabBarIcon: ({ tintColor }) => <Icon name="globe" size={25} color={tintColor} />
+            tabBarIcon: ({ tintColor }) => <Icon name="chat-bubble" size={25} color={tintColor} />
         }
     },
 
@@ -86,6 +87,7 @@ const TabStack = TabNavigator(
         inactiveTintColor:'#E6E6E6',
         activeTintColor: '#1CA2BB',
         labelStyle: {
+            margin:0,
           fontSize: 12,
           color:'white'
         },
@@ -107,12 +109,10 @@ const SemiAppStack = StackNavigator(
     Home : {
         screen : Profile,
         navigationOptions:(navigation)=> ({
-            title:'Home',
-            headerLeft: (
-                <View><Icon name="bars" size={26} color="#0F3057" onPress={()=>this.props.navigation.navigate('DrawerOpen')}/></View>
-            ),
+            title:'Profile',
+            //headerLeft:(<View><Icon name="bookmark" size={26} color="#0F3057" onPress={()=>this.props.navigation.navigate('DrawerOpen')}/></View>),
             tabBarLabel: 'Home',
-            tabBarIcon: ({ tintColor }) => <Icon name="music" size={25} color={tintColor} />
+            tabBarIcon: ({ tintColor }) => <Icon name="account-circle" size={25} color={tintColor} />
         })
     },
     Friends : {
@@ -120,7 +120,7 @@ const SemiAppStack = StackNavigator(
         navigationOptions: {
             headerTitle:'Friends',
             tabBarLabel: 'Users',
-            tabBarIcon: ({ tintColor }) => <Icon name="comments" size={25} color={tintColor} />
+            tabBarIcon: ({ tintColor }) => <Icon name="people" size={25} color={tintColor} />
         }
     },
     Groups : { 
@@ -128,7 +128,7 @@ const SemiAppStack = StackNavigator(
         navigationOptions: {
             headerTitle:'Groups',
             tabBarLabel: 'Groups',
-            tabBarIcon: ({ tintColor }) => <Icon name="phone" size={25} color={tintColor} />
+            tabBarIcon: ({ tintColor }) => <Icon name="account-balance" size={25} color={tintColor} />
         }
     },
     Public : {
@@ -136,7 +136,7 @@ const SemiAppStack = StackNavigator(
         navigationOptions: {
             headerTitle:"Public",
             tabBarLabel: "Public",
-            tabBarIcon: ({ tintColor }) => <Icon name="globe" size={25} color={tintColor} />
+            tabBarIcon: ({ tintColor }) => <Icon name="chat-bubble" size={23} color={tintColor} />
         }
     }
 
@@ -151,14 +151,15 @@ const SemiAppStack = StackNavigator(
         lazy: true,
         showIcon:true,
         upperCaseLabel:false,
-        inactiveTintColor:'#E6E6E6',
-        activeTintColor: '#1CA2BB',
+        inactiveTintColor:'#7695a1',
+        activeTintColor: '#8046e4',
         labelStyle: {
+            margin:0,
           fontSize: 12,
-          color:'white'
+          color:'black'
         },
         style: {
-          backgroundColor: '#212121',
+          backgroundColor: '#f2f9ff',
         },
       }
 })
@@ -168,8 +169,10 @@ chat : {screen : Chat},
 cs : {screen : CS},
 pt : {screen : PT},
 bd : {screen : BD},
-Home :{screen : Profile}
-});
+Home :{screen : Profile},
+
+},
+);
 
 
 const AppStack = DrawerNavigator({

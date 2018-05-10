@@ -19,7 +19,8 @@ class Register extends React.Component {
             email:'',
             password:'',
             username:'',
-            role:'Student'
+            role:'Student',
+            online:false
         }
     }
 
@@ -43,7 +44,8 @@ firebase.database().ref().child('Accounts').child(user.uid).set({
     uid: user.uid,
     name: this.state.username,
     role: this.state.role,
-    image:"https://firebasestorage.googleapis.com/v0/b/unichatio-f63db.appspot.com/o/ghost.png?alt=media&token=5b97d67e-b109-402d-8d07-657f221b9c47"
+    image:"https://firebasestorage.googleapis.com/v0/b/unichatio-f63db.appspot.com/o/user.png?alt=media&token=644dcea8-1c60-4615-998c-8e29627b1f8b",
+    online: this.state.online
 })
         {/*db.child('Users').push({
             email: this.state.email,
@@ -160,7 +162,7 @@ else {
         secureTextEntry
         autoCapitalize="none"
         autoCorrect={false}
-        returnKeyType="next"
+        returnKeyType="done"
         underlineColorAndroid="transparent"
         placeholderTextColor="#bdc3c7"
 
