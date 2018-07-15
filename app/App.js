@@ -30,6 +30,7 @@ import PT from './screens/PT';
 import BD from './screens/BD';
 //import {AuthStack} from "./config/routes";
 //import {AppStack} from './config/routes';
+import { fromLeft,fromTop,fadeIn,zoomIn,zoomOut,flipY,flipX } from 'react-navigation-transitions';
 
 
 
@@ -188,6 +189,9 @@ const AuthStack = StackNavigator({
   register : {screen : Register},
   location : {screen : Location},
   forget : {screen : Forget} 
+},{
+    transitionConfig: () => fadeIn(400),
+
 });
 
 
@@ -201,6 +205,8 @@ export default App= SwitchNavigator(
   },
   {
     initialRouteName: 'AuthLoading',
+    transitionConfig: () => fadeIn(400),
+
   }
 );
 

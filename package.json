@@ -6,6 +6,11 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest"
   },
+  "rnpm": {
+    "assets": [
+	"./assets/fonts/"
+    ]
+},
   "dependencies": {
     "native-base": "^2.3.10",
     "react": "~16.2.0",
@@ -25,11 +30,13 @@
     "react-native-material-textfield": "^0.12.0",
     "react-native-off-canvas-menu": "^0.1.31",
     "react-native-simple-drawer": "^0.4.5",
+    "react-native-snackbar": "^0.4.7",
     "react-native-timeago": "^0.4.0",
     "react-native-user-avatar": "^1.0.3",
     "react-native-vector-icons": "^4.5.0",
     "react-navigation": "^1.5.7",
     "react-navigation-slide-from-right-transition": "^1.0.4",
+    "react-navigation-transitions": "^1.0.4",
     "react-timeago": "^3.4.3"
   },
   "devDependencies": {

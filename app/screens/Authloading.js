@@ -7,7 +7,9 @@ import {
     StyleSheet,
     View,
     Image,
+    NetInfo
   } from 'react-native';
+  import Snackbar from 'react-native-snackbar';
   import firebase from 'react-native-firebase';
 // create a component
 class Authloading extends React.Component {
@@ -19,6 +21,14 @@ class Authloading extends React.Component {
 
       // Fetch the token from storage then navigate to our appropriate place
   _bootstrapAsync = async () => {
+    NetInfo.getConnectionInfo().then((connectionInfo) => {
+        if(connectionInfo.type == 'none'){
+            Snackbar.show({
+                title: 'No connection available.',
+                duration: Snackbar.LENGTH_SHORT,
+                backgroundColor:'#e74c3c'
+            });
+        }})
     const userToken = await AsyncStorage.getItem('userToken');
     console.log(userToken)
     

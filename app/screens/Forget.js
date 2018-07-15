@@ -72,7 +72,7 @@ else {
               
 
             <TouchableOpacity activeOpacity={0.8} onPress={()=>this.forget()} style={{backgroundColor:'white',borderRadius:19,width:'75%',height:40,alignItems:'center',justifyContent:'center',marginVertical:10}}>
-                <Text style={{fontWeight:"700",fontSize:15,includeFontPadding:true,color:'#3d1767'}}>Send Email</Text>
+                <Text style={{fontWeight:"700",fontSize:15,includeFontPadding:true,color:'#3d1767'}}>Send Confirmation</Text>
             </TouchableOpacity>
 
 

@@ -122,7 +122,7 @@ else {
                 onChangeText={(username) => this.setState({username})}
                 multiline={false}
                 placeholder="What should we call you"
-                autoCapitalize="none"
+                autoCapitalize="words"
                 autoCorrect={false}
                 returnKeyType="next"
                 underlineColorAndroid="transparent"

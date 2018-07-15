@@ -68,6 +68,8 @@
 		636B945E744342F1AF00532A /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA865B7822C14D9AB0710611 /* rubicon-icon-font.ttf */; };
 		8D0456D45A5443B9A2E6D94F /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09316376296A465AB4089EC0 /* SimpleLineIcons.ttf */; };
 		E7277E89645E4E32A810724B /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 544811E18E524EA3B0C0FBBE /* Zocial.ttf */; };
+		C6088E1375B74FBEB688C69D /* Awesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7B6A445D6F004AA6B9CD9111 /* Awesome.otf */; };
+		53CE23738E6C48B8BCD3846D /* Neo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A95617FB66594C2D9C39F7B1 /* Neo.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -447,6 +449,8 @@
 		FA865B7822C14D9AB0710611 /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		09316376296A465AB4089EC0 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; name = "SimpleLineIcons.ttf"; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		544811E18E524EA3B0C0FBBE /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		7B6A445D6F004AA6B9CD9111 /* Awesome.otf */ = {isa = PBXFileReference; name = "Awesome.otf"; path = "../assets/fonts/Awesome.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A95617FB66594C2D9C39F7B1 /* Neo.ttf */ = {isa = PBXFileReference; name = "Neo.ttf"; path = "../assets/fonts/Neo.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -669,6 +673,8 @@
 				FA865B7822C14D9AB0710611 /* rubicon-icon-font.ttf */,
 				09316376296A465AB4089EC0 /* SimpleLineIcons.ttf */,
 				544811E18E524EA3B0C0FBBE /* Zocial.ttf */,
+				7B6A445D6F004AA6B9CD9111 /* Awesome.otf */,
+				A95617FB66594C2D9C39F7B1 /* Neo.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1335,6 +1341,8 @@
 				636B945E744342F1AF00532A /* rubicon-icon-font.ttf in Resources */,
 				8D0456D45A5443B9A2E6D94F /* SimpleLineIcons.ttf in Resources */,
 				E7277E89645E4E32A810724B /* Zocial.ttf in Resources */,
+				C6088E1375B74FBEB688C69D /* Awesome.otf in Resources */,
+				53CE23738E6C48B8BCD3846D /* Neo.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

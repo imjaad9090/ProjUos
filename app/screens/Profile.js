@@ -12,7 +12,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import LinearGradient from 'react-native-linear-gradient';
 import Spinner from 'react-native-loading-spinner-overlay';
 import UserAvatar from 'react-native-user-avatar';
-
+const place = 'Loading'
 // create a component
 class Login extends React.Component {
     static navigationOptions =({ navigation }) =>{
@@ -190,7 +190,7 @@ else {
          
             <Spinner visible={this.state.visible}/>
             <TouchableOpacity onPress={()=>this.picker()}>
-            <UserAvatar size="200" name="App User" src= {this.state.link}/>
+            <UserAvatar size="200" name='A U' src= {this.state.link}/>
             </TouchableOpacity>
             <View style={{marginVertical:20,alignItems:'center'}}>
             <Text style={{color:'#2C2D33',fontWeight:"bold",fontSize:29}}>{this.state.uname}</Text>
