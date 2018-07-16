@@ -19,7 +19,9 @@ class Login extends React.Component {
         super()
         this.state={
             email:'',
-            password:''
+            password:'',
+            logincolor:'white',
+            logomargin:80
         }
     }
         
@@ -39,8 +41,9 @@ class Login extends React.Component {
                 navigate('App');
                 console.log('worked inside')
                  })
-                 .catch(function(error){
+                 .catch((error)=>{
                 // Handle Errors here.
+                this.setState({logincolor:'#e74c3c'})
                 var errorCode = error.code;
                 var errorMessage = JSON.stringify(error.message);
                 Alert.alert('Something went wrong',errorMessage)
@@ -61,10 +64,21 @@ class Login extends React.Component {
 
     }
      componentDidMount(){
-        StatusBar.setHidden(true);
 
-        
+        StatusBar.setHidden(true);
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+
      }
+     _keyboardDidShow () {
+        console.log('Keyboard Shown');
+      }
+
+      _keyboardDidHide () {
+        console.log('Keyboard Hidden');
+
+      }
+    
 
     render() {
         return (
@@ -107,7 +121,7 @@ class Login extends React.Component {
 
 />
 
-            <TouchableOpacity activeOpacity={0.8} onPress={()=>this.register()} style={{backgroundColor:'white',borderRadius:19,width:'75%',height:40,alignItems:'center',justifyContent:'center',marginVertical:10}}>
+            <TouchableOpacity activeOpacity={0.8} onPress={()=>this.register()} style={{backgroundColor:this.state.logincolor,borderRadius:19,width:'75%',height:40,alignItems:'center',justifyContent:'center',marginVertical:10}}>
                 <Text style={{fontWeight:"700",fontSize:15,includeFontPadding:true,color:'#3d1767'}}>LOGIN</Text>
             </TouchableOpacity>
 

@@ -1,7 +1,7 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,ImageBackground,ActivityIndicator, Button,StatusBar,Image,TouchableOpacity,TextInput,Alert,AsyncStorage,Platform } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
+import { View, Text, StyleSheet,ImageBackground,ActivityIndicator, Button,StatusBar,Image,TouchableOpacity,TextInput,Alert,AsyncStorage,Platform,TouchableWithoutFeedback } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { Container, Header, Content, Thumbnail,H1,H2,H3 } from 'native-base';
 import Drawer from 'react-native-drawer'
 import Register from './Register';
@@ -19,7 +19,7 @@ class Login extends React.Component {
         title:'Profile'
         
         headerStyle:{
-        backgroundColor:'#F2F9FF'
+        backgroundColor:'#2A3963'
         }
         
     }
@@ -189,9 +189,17 @@ else {
          <View style={styles.container}>
          
             <Spinner visible={this.state.visible}/>
-            <TouchableOpacity onPress={()=>this.picker()}>
-            <UserAvatar size="200" name='A U' src= {this.state.link}/>
-            </TouchableOpacity>
+            <View>
+            <View style={{backgroundColor:'#337f93',width:205,height:205,borderRadius:102.5,justifyContent:'center',alignItems:'center'}}>
+            
+            <UserAvatar size="200" name='UOS' src= {this.state.link}/>
+            </View>
+            <TouchableWithoutFeedback onPress={()=>this.picker()}>
+            <View style={{position:'absolute',alignSelf:'flex-end',bottom:0,right:20,width:48,height:48,borderRadius:24,backgroundColor:'#568',alignItems:"center",justifyContent:'center'}}>
+                <Icon name="camera" size={22} color="white" />
+            </View>
+            </TouchableWithoutFeedback>
+            </View>
             <View style={{marginVertical:20,alignItems:'center'}}>
             <Text style={{color:'#2C2D33',fontWeight:"bold",fontSize:29}}>{this.state.uname}</Text>
             <Text style={{color:'#3B3C43',fontSize:16}}>{this.state.urole}</Text>

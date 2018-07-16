@@ -10,7 +10,7 @@ class Groups extends Component {
         title:'Groups'
         
         headerStyle:{
-        backgroundColor:'#F2F9FF'
+        backgroundColor:'#2A3963'
         }
         
     }

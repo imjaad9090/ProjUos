@@ -13,7 +13,7 @@ class Users extends React.Component {
         title:'Friends'
         
         headerStyle:{
-        backgroundColor:'#F2F9FF'
+        backgroundColor:'#2A3963'
         }
         
     }
@@ -137,7 +137,7 @@ change=()=>{
             <View style={styles.container}>
             <Spinner visible={this.state.visible}/>
             
-            <View style={{width:'95%',alignSelf:'center',height:45,top:5,borderColor:'#c6d0ec',borderWidth:2,backgroundColor:'white',borderRadius:5,alignContent:'stretch'}}>
+            {/*<View style={{width:'95%',alignSelf:'center',height:45,top:5,borderColor:'#c6d0ec',borderWidth:2,backgroundColor:'white',borderRadius:5,alignContent:'stretch'}}>
             <TextInput  
              //onTouchStart={()=> this.setState({show:false,body:true})}
            selectionColor={'black'}
@@ -160,7 +160,7 @@ change=()=>{
                 fontStyle:'normal',
                    
             }} />            
-            </View>
+            </View>*/}
             
             <View>
             <FlatList
@@ -182,7 +182,7 @@ change=()=>{
                         
                         
                         <View style={{left:13}}>
-                        <Text style={{fontWeight:'400',fontSize:17,}}>{item.name}</Text>
+                        <Text style={{fontWeight:'400',fontSize:16,color:'#141c33'}}>{item.name}</Text>
                         <Text style={{color:'#b5b5b5',fontSize:14}}>We will meet at the station..</Text>
 
                         

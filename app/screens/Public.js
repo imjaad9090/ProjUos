@@ -14,7 +14,7 @@ class Public extends Component {
         title:'Lounge'
         
         headerStyle:{
-        backgroundColor:'#F2F9FF'
+        backgroundColor:'#2A3963'
         }
         
     }

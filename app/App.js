@@ -41,9 +41,14 @@ const TabStack = TabNavigator(
         screen : Profile,
         navigationOptions:(navigation)=> ({
             title:'Home',
+            
             headerLeft: (
                 <View><Icon name="bars" size={26} color="#0F3057" onPress={()=>navigation.navigate('DrawerOpen')}/></View>
             ),
+            headerTitleStyle:{
+                color:'white',
+                fontWeight:'400'
+            },
             tabBarLabel: 'Home',
             tabBarIcon: ({ tintColor }) => <Icon name='account-circle' size={25} color={tintColor} />
         })
@@ -53,6 +58,10 @@ const TabStack = TabNavigator(
         navigationOptions: {
             headerTitle:'Friends',
             tabBarLabel: 'Users',
+            headerTitleStyle:{
+                color:'white',
+                fontWeight:'400'
+            },
             tabBarIcon: ({ tintColor }) => <Icon name="people" size={25} color={tintColor} />
         }
     },
@@ -61,6 +70,10 @@ const TabStack = TabNavigator(
         navigationOptions: {
             headerTitle:'Groups',
             tabBarLabel: 'Groups',
+            headerTitleStyle:{
+                color:'white',
+                fontWeight:'400'
+            },
             tabBarIcon: ({ tintColor }) => <Icon name="account-balance" size={25} color={tintColor} />
         }
     },
@@ -113,6 +126,13 @@ const SemiAppStack = StackNavigator(
             title:'Profile',
             //headerLeft:(<View><Icon name="bookmark" size={26} color="#0F3057" onPress={()=>this.props.navigation.navigate('DrawerOpen')}/></View>),
             tabBarLabel: 'Home',
+            headerTitleStyle:{
+                color:'white',
+                fontWeight:'400'
+            },
+            headerStyle:{
+                backgroundColor:'#2A3963'
+            },
             tabBarIcon: ({ tintColor }) => <Icon name="account-circle" size={25} color={tintColor} />
         })
     },
@@ -121,6 +141,13 @@ const SemiAppStack = StackNavigator(
         navigationOptions: {
             headerTitle:'Friends',
             tabBarLabel: 'Users',
+            headerTitleStyle:{
+                color:'white',
+                fontWeight:'400'
+            },
+            headerStyle:{
+                backgroundColor:'#2A3963'
+            },
             tabBarIcon: ({ tintColor }) => <Icon name="people" size={25} color={tintColor} />
         }
     },
@@ -129,6 +156,13 @@ const SemiAppStack = StackNavigator(
         navigationOptions: {
             headerTitle:'Groups',
             tabBarLabel: 'Groups',
+            headerTitleStyle:{
+                color:'white',
+                fontWeight:'400'
+            },
+            headerStyle:{
+                backgroundColor:'#2A3963'
+            },
             tabBarIcon: ({ tintColor }) => <Icon name="account-balance" size={25} color={tintColor} />
         }
     },
@@ -137,6 +171,15 @@ const SemiAppStack = StackNavigator(
         navigationOptions: {
             headerTitle:"Public",
             tabBarLabel: "Public",
+            headerStyle:{
+                backgroundColor:'#2A3963',
+                alignItems:'center',
+            },
+            headerTitleStyle:{
+                color:'white',
+                fontWeight:'400',
+                textAlign:'center'
+            },
             tabBarIcon: ({ tintColor }) => <Icon name="chat-bubble" size={23} color={tintColor} />
         }
     }
@@ -153,14 +196,14 @@ const SemiAppStack = StackNavigator(
         showIcon:true,
         upperCaseLabel:false,
         inactiveTintColor:'#7695a1',
-        activeTintColor: '#8046e4',
+        activeTintColor: '#fff',
         labelStyle: {
             margin:0,
           fontSize: 12,
-          color:'black'
+          color:'white'
         },
         style: {
-          backgroundColor: '#f2f9ff',
+          backgroundColor: '#2A3963',
         },
       }
 })
