@@ -11,6 +11,11 @@ import firebase from 'react-native-firebase';
 import ImagePicker from 'react-native-image-crop-picker';
 import LinearGradient from 'react-native-linear-gradient';
 import Spinner from 'react-native-loading-spinner-overlay';
+import {
+    CachedImage,
+    ImageCacheProvider
+} from 'react-native-cached-image';
+
 import UserAvatar from 'react-native-user-avatar';
 const place = 'Loading'
 // create a component
@@ -103,7 +108,6 @@ else {
 }
 
           });
-        StatusBar.setHidden(true);
 
         {/*var database = firebase.database();
         database.ref('Accounts/'+user.uid).once('value').then(function(snapshot) {
@@ -190,20 +194,25 @@ else {
          
             <Spinner visible={this.state.visible}/>
             <View>
-            <View style={{backgroundColor:'#337f93',width:205,height:205,borderRadius:102.5,justifyContent:'center',alignItems:'center'}}>
             
-            <UserAvatar size="200" name='UOS' src= {this.state.link}/>
-            </View>
+            <LinearGradient   start={{x: 0.0, y: 0.25}} end={{x: 0.5, y: 1.0}}
+ colors={['#0F2027','#203A43','#2c5364']} style={{width:210,height:210,borderRadius:105,justifyContent:'center',alignItems:'center'}} >
+            
+            <CachedImage style={{width:200,height:200,borderRadius:100}} source={{uri:this.state.link}}/>
+            </LinearGradient>
             <TouchableWithoutFeedback onPress={()=>this.picker()}>
-            <View style={{position:'absolute',alignSelf:'flex-end',bottom:0,right:20,width:48,height:48,borderRadius:24,backgroundColor:'#568',alignItems:"center",justifyContent:'center'}}>
+            
+            <LinearGradient colors={['#000428','#004e92']} style={{position:'absolute',alignSelf:'flex-end',bottom:0,right:20,width:48,height:48,borderRadius:24,backgroundColor:'#568',alignItems:"center",justifyContent:'center'}}>
+
                 <Icon name="camera" size={22} color="white" />
-            </View>
+
+            </LinearGradient>
             </TouchableWithoutFeedback>
             </View>
             <View style={{marginVertical:20,alignItems:'center'}}>
-            <Text style={{color:'#2C2D33',fontWeight:"bold",fontSize:29}}>{this.state.uname}</Text>
-            <Text style={{color:'#3B3C43',fontSize:16}}>{this.state.urole}</Text>
-            <Text style={{color:'#3B3C43',fontSize:16}}>{this.state.uemail}</Text>
+            <Text style={{color:'#2C2D33',fontWeight:"400",fontSize:20}}>{this.state.uname}</Text>
+            <Text style={{color:'#3B3C43',fontSize:15}}>{this.state.urole}</Text>
+            <Text style={{color:'#3B3C43',fontSize:15}}>{this.state.uemail}</Text>
 
             </View>
          <Button title="logout" color="#568" onPress={()=>this.delete()}/>

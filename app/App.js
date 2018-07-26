@@ -120,22 +120,7 @@ const SemiAppStack = StackNavigator(
     {
     
     
-    Home : {
-        screen : Profile,
-        navigationOptions:(navigation)=> ({
-            title:'Profile',
-            //headerLeft:(<View><Icon name="bookmark" size={26} color="#0F3057" onPress={()=>this.props.navigation.navigate('DrawerOpen')}/></View>),
-            tabBarLabel: 'Home',
-            headerTitleStyle:{
-                color:'white',
-                fontWeight:'400'
-            },
-            headerStyle:{
-                backgroundColor:'#2A3963'
-            },
-            tabBarIcon: ({ tintColor }) => <Icon name="account-circle" size={25} color={tintColor} />
-        })
-    },
+   
     Friends : {
         screen : Users,
         navigationOptions: {
@@ -173,7 +158,6 @@ const SemiAppStack = StackNavigator(
             tabBarLabel: "Public",
             headerStyle:{
                 backgroundColor:'#2A3963',
-                alignItems:'center',
             },
             headerTitleStyle:{
                 color:'white',
@@ -182,7 +166,23 @@ const SemiAppStack = StackNavigator(
             },
             tabBarIcon: ({ tintColor }) => <Icon name="chat-bubble" size={23} color={tintColor} />
         }
-    }
+    },
+    Home : {
+        screen : Profile,
+        navigationOptions:(navigation)=> ({
+            title:'Profile',
+            //headerLeft:(<View><Icon name="bookmark" size={26} color="#0F3057" onPress={()=>this.props.navigation.navigate('DrawerOpen')}/></View>),
+            tabBarLabel: 'Home',
+            headerTitleStyle:{
+                color:'white',
+                fontWeight:'400'
+            },
+            headerStyle:{
+                backgroundColor:'#2A3963'
+            },
+            tabBarIcon: ({ tintColor }) => <Icon name="account-circle" size={25} color={tintColor} />
+        })
+    },
 
 },{
     
@@ -219,11 +219,11 @@ Home :{screen : Profile},
 );
 
 
-const AppStack = DrawerNavigator({
+const AppStack = StackNavigator({
     
     All : {screen : SemiAppStack},
 },{
-    contentComponent:sidebar
+    headerMode:'none'
 });
 
 

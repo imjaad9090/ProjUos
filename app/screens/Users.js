@@ -1,10 +1,29 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, StyleSheet,Button,FlatList,Image,TouchableOpacity,AsyncStorage,TextInput } from 'react-native';
+import { View, StyleSheet,Button,FlatList,Image,TouchableOpacity,PushNotificationIOS,AsyncStorage,TextInput,StatusBar } from 'react-native';
 import firebase from 'react-native-firebase';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Container, Header, Content, Card, CardItem, Thumbnail,Text, Left, Body, Right } from 'native-base';
+function geoFence(lat1, lon1, lat2, lon2) 
+    {
+      var R = 6371; // km
+      var dLat = toRad(lat2-lat1);
+      var dLon = toRad(lon2-lon1);
+      var lat1 = toRad(lat1);
+      var lat2 = toRad(lat2);
 
+      var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+      var d = R * c;
+      return d;
+    }
+
+    // Converts numeric degrees to radians
+    function toRad(Value) 
+    {
+        return Value * Math.PI / 180;
+    }  
 
 // create a component
 class Users extends React.Component {
@@ -22,7 +41,7 @@ constructor(props){
     super(props)
     this.state={
         visible: true,
-        online:'#ced6e0',
+        online:'#44bd32',
         store:[]
     }
     this.userR = firebase.database().ref('Accounts/');
@@ -31,9 +50,45 @@ constructor(props){
 }
 
 componentDidMount(){
+
+    this.interval = setInterval(() => {
+
+        this.checkLocation()
+
+
+
+    }, 10000);
+
+
+}
+
+
+checkLocation(){
+
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+          if(position){
+            console.log(position)
+            var distance = geoFence(31.415634,74.175616,position.coords.latitude,position.coords.longitude).toFixed(5);
+            if(distance <= 1){
+                console.log('inside the campus')
+            }
+            else{
+                console.log('Outside campus')
+            }
+
+
+
+
+          }
+          else {
+              console.log('position undefined')
+          }
+        },
+        (error) => console.log({ error: error.message }),
+        { enableHighAccuracy: true},
+      );
     
-
-
 }
 
 
@@ -62,8 +117,12 @@ showImage(props){
 }
 
 
-async getData(){
-this.setState({visible:true})
+     getData(){
+    this.setState({visible:true})
+
+    firebase.auth().onAuthStateChanged( user => {
+        if(user){
+
     var userR = firebase.database().ref('Accounts/');
        var user = firebase.auth().currentUser;
         
@@ -82,8 +141,11 @@ this.setState({visible:true})
             role:  child.val().role,
             id: child.val().uid,
             image: child.val().image,
-            status: JSON.stringify(child.val().online)
+            status: (child.val().online),
+            location:child.val().location
           })
+
+
 }
 else {
     console.log('not one of us')
@@ -97,6 +159,10 @@ else {
         
     });  
 
+
+        }}
+    )
+
 }
 
 
@@ -106,7 +172,6 @@ else {
         var database = firebase.database();
 
         
-        console.log(user.uid)
 
        console.log('will mount ran')
        var mymail= await AsyncStorage.getItem('myEmail')
@@ -118,6 +183,7 @@ else {
     }
 
       onlineStatus(props){
+          console.log(props)
           if(props == 'true'){
        return <Image source={require('./Images/online.png')} style={{width:10,height:10,resizeMode:'contain'}} />
     
@@ -135,6 +201,10 @@ change=()=>{
         let currentComponent = this.state;
         return (
             <View style={styles.container}>
+            <StatusBar
+     backgroundColor="blue"
+     barStyle="light-content"
+   />
             <Spinner visible={this.state.visible}/>
             
             {/*<View style={{width:'95%',alignSelf:'center',height:45,top:5,borderColor:'#c6d0ec',borderWidth:2,backgroundColor:'white',borderRadius:5,alignContent:'stretch'}}>
@@ -176,13 +246,15 @@ change=()=>{
                         
                         
                         
-                        <View style={[styles.iconBorder, {backgroundColor: this.state.online}]}>
+              <View style={[styles.iconBorder, {backgroundColor: item.status? '#1abc9c':'#dfe4ea'}]}>
                         <Image source={{uri : item.image}} style={{width:50,height:50,borderRadius:25,}}    />
                         </View>
                         
                         
                         <View style={{left:13}}>
                         <Text style={{fontWeight:'400',fontSize:16,color:'#141c33'}}>{item.name}</Text>
+                        <Text style={{fontWeight:'400',fontSize:16,color:'#141c33'}}>{item.location.latitude}</Text>
+
                         <Text style={{color:'#b5b5b5',fontSize:14}}>We will meet at the station..</Text>
 
                         

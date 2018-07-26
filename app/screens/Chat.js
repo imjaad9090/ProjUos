@@ -9,6 +9,8 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 // create a component
 class Chat extends Component {
+   
+
 
     constructor(props){
         super(props)
@@ -28,12 +30,12 @@ class Chat extends Component {
 
     static navigationOptions=({ navigation })=>({
         title: `${navigation.state.params.name}`,  
-        headerTintColor: '#2a0845', 
+        headerTintColor: '#fff', 
         headerStyle:{
-            backgroundColor:'#F2F9FF'
+            backgroundColor:'#2A3963'
         },
         headerTitleStyle:{
-            color:'#2a0845'
+            color:'#fff'
         }
     })
 
