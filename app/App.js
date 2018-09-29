@@ -185,7 +185,7 @@ const SemiAppStack = StackNavigator(
     },
 
 },{
-    
+    headerMode:'none',
     swipeEnabled:true,
     tabBarPosition:"bottom",
     tabBarOptions: {
@@ -215,7 +215,9 @@ pt : {screen : PT},
 bd : {screen : BD},
 Home :{screen : Profile},
 
-},
+},{
+    headerMode:'none'
+}
 );
 
 
@@ -233,7 +235,7 @@ const AuthStack = StackNavigator({
   location : {screen : Location},
   forget : {screen : Forget} 
 },{
-    transitionConfig: () => fadeIn(400),
+    transitionConfig: () => fromLeft(500),
 
 });
 

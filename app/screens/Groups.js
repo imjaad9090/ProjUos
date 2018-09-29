@@ -1,17 +1,19 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,TouchableOpacity,ScrollView } from 'react-native';
+import { View, Text, StyleSheet,TouchableOpacity,ScrollView,Platform } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import Icon from "react-native-vector-icons/Feather";
 
 // create a component
 class Groups extends Component {
 
     static navigationOptions =({ navigation }) =>{
-        title:'Groups'
+       /*  title:'Groups'
         
         headerStyle:{
         backgroundColor:'#2A3963'
-        }
+        } */
+        header:null
         
     }
 
@@ -27,6 +29,18 @@ class Groups extends Component {
 
     render() {
         return (
+            <View style={{flex:1}}>
+             <View style={styles.header}>
+                    <View style={styles.headerInner}>
+
+
+                        <Text style={styles.headerText}>Groups</Text>
+                        
+                        <Icon name="more-vertical" size={26} onPress={()=>this.props.navigation.pop()} color={'white'} />
+
+
+                    </View>
+                </View>
             <View style={styles.container}>
             
                 <LinearGradient  colors={['#07a585','#076585']} style={{width:'100%',height:140,alignItems:'center',justifyContent:'center',borderColor:'rgba(0,0,0,0.2)',borderWidth:2}}>
@@ -44,6 +58,7 @@ class Groups extends Component {
                 <Text onPress={()=>this.props.navigation.navigate('bd')} style={{color:'white',alignSelf:'center'}}>Tap to join this chat.</Text>
             </LinearGradient>
             </View>
+            </View>
            
 
         );
@@ -58,6 +73,30 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
         backgroundColor: 'white',
+    },
+    header: {
+        height: 50,
+        paddingHorizontal: 13,
+        alignItems: 'center',
+        //justifyContent: 'center',
+        marginTop: Platform.OS == "ios" ? 20 : 0,
+        flexDirection: 'row',
+    
+        backgroundColor: '#0b2441'
+    },
+    headerInner: {
+      flex: 1,
+      backgroundColor: 'transparent',
+      flexDirection: 'row'
+    },
+    headerText: {
+        flexDirection: 'row',
+        flex: 1,
+        textAlign: 'center',
+        backgroundColor: 'transparent',
+        fontSize: 19,
+        color: 'white',
+        fontWeight: '400'
     },
 });
 

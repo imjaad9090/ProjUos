@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text,Keyboard,TouchableWithoutFeedback,StyleSheet,ScrollView,Button,TouchableOpacity,KeyboardAvoidingView,TextInput,Image,ImageBackground,StatusBar,Alert,AsyncStorage, } from 'react-native';
+import { View, Text,Keyboard,TouchableWithoutFeedback,StyleSheet,ScrollView,Button,TouchableOpacity,KeyboardAvoidingView,TextInput,Image,ImageBackground,StatusBar,Alert,AsyncStorage,ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Drawer from 'react-native-drawer'
 import PropTypes from 'prop-types';
@@ -9,6 +9,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import firebase from 'react-native-firebase';
 import { TextField } from 'react-native-material-textfield';
 import GeoFencing from 'react-native-geo-fencing';
+import { MaterialIndicator} from 'react-native-indicators';
 // create a component
 class Login extends React.Component {
     static navigationOptions = {
@@ -21,13 +22,15 @@ class Login extends React.Component {
             email:'',
             password:'',
             logincolor:'white',
-            logomargin:80
+            logomargin:80,
+            animating:false,
+            disabled:false
         }
     }
         
     
     
-        register(){
+        loginUser(){
         const { navigate } = this.props.navigation;
 
         const { email, password } = this.state;
@@ -35,15 +38,19 @@ class Login extends React.Component {
         
               // User is signed in.
               if(this.state.email!='' && this.state.password != '')
-              {firebase.auth().signInWithEmailAndPassword(email, password).then( async function() {
+              {
+                this.setState({disabled:true,animating:true})
+
+                firebase.auth().signInWithEmailAndPassword(email, password).then( async function() {
                 await AsyncStorage.setItem('userToken', 'LoggedIn');
-            
+
                 navigate('App');
-                console.log('worked inside')
+                //console.log('worked inside')
                  })
                  .catch((error)=>{
                 // Handle Errors here.
-                this.setState({logincolor:'#e74c3c'})
+
+                this.setState({disabled:false,animating:false,logincolor:'#e74c3c'})
                 var errorCode = error.code;
                 var errorMessage = JSON.stringify(error.message);
                 Alert.alert('Something went wrong',errorMessage)
@@ -82,10 +89,12 @@ class Login extends React.Component {
 
     render() {
         return (
-            <KeyboardAvoidingView behavior="padding">
 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <ImageBackground source={require('./Images/23.png')}  style={styles.bgImage}>
           <Image source={require('./Images/unichite.png')} style={{width:200,height:100,resizeMode:'contain',bottom:80}}/>
+
+          <KeyboardAvoidingView style={{width:'100%',alignItems:'center'}} behavior="padding">
+
            <TextInput
                 style={styles.input}
                 selectionColor={'#3d1767'}
@@ -94,6 +103,7 @@ class Login extends React.Component {
                 multiline={false}
                 placeholder="Email"
                 autoCapitalize="none"
+
                 keyboardType="email-address"
                 autoCorrect={false}
                 returnKeyType="next"
@@ -115,14 +125,19 @@ class Login extends React.Component {
         secureTextEntry
         autoCapitalize="none"
         autoCorrect={false}
-        returnKeyType="next"
+        returnKeyType="done"
         underlineColorAndroid="transparent"
         placeholderTextColor="#bdc3c7"
 
 />
+</KeyboardAvoidingView>
 
-            <TouchableOpacity activeOpacity={0.8} onPress={()=>this.register()} style={{backgroundColor:this.state.logincolor,borderRadius:19,width:'75%',height:40,alignItems:'center',justifyContent:'center',marginVertical:10}}>
+            <TouchableOpacity disabled={this.state.disabled} activeOpacity={0.8} onPress={()=>this.loginUser()} style={{backgroundColor:this.state.logincolor,borderRadius:19,width:'75%',height:40, alignItems:'center',justifyContent:'center',marginVertical:10}}>
+            
+           
                 <Text style={{fontWeight:"700",fontSize:15,includeFontPadding:true,color:'#3d1767'}}>LOGIN</Text>
+
+            
             </TouchableOpacity>
 
 <TouchableOpacity activeOpacity={0.8} onPress={()=>this.props.navigation.navigate('register')} style={{backgroundColor:'white',borderRadius:19,width:'75%',height:40,alignItems:'center',justifyContent:'center'}}>
@@ -132,12 +147,14 @@ class Login extends React.Component {
             <View style={{flexDirection:'row'}}>
             <Text style={{color:'#fff',fontWeight:'200',fontSize:15,top:10}} onPress={()=>this.props.navigation.navigate('forget')}>Having trouble logging in?</Text>
             </View>
+            <View style={{paddingTop:19}}>
+            <ActivityIndicator size="large" color='#fff' animating={this.state.animating}  />
+            </View>
             
-            
-            
+            {/* <MaterialIndicator color='white' size={23} animationDuration={5000} animating={this.state.animating}/> */}
+
               </ImageBackground>
               </TouchableWithoutFeedback>
-          </KeyboardAvoidingView>
 
         );
     }
@@ -152,6 +169,7 @@ const styles = StyleSheet.create({
     paddingRight: 15
     },
     input: {
+        letterSpacing:2,
         marginVertical:5,
         height: 40,
         padding:8,
