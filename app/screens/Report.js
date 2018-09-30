@@ -26,6 +26,7 @@ const MSG2 = 'Could not find location, make sure GPS is enabled.'
 import {Text} from "native-base";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { CheckBox } from 'react-native-elements'
 import * as Actions from '../../actions';
 var db = 'https://unichatio-f63db.firebaseio.com/Accounts/'
 function geoFence(lat1, lon1, lat2, lon2) {
@@ -51,7 +52,9 @@ function toRad(Value) {
 // create a component
  class Users extends React.Component {
   static navigationOptions = ({ navigation }) => {
-   header:null
+
+   drawerLockMode : 'locked-closed'
+
     /*  title: "Friends";
 
     headerStyle: {
@@ -68,8 +71,12 @@ function toRad(Value) {
       colors:this.props.colors,
       visible: true,
       online: "#44bd32",
+      checked1:false,
+      checked2:false,
+      checked3:false,
       background:'white',
       modalVisible: false,
+      filterText: '',
       store: [],
       message: MSG1
     };
@@ -84,59 +91,12 @@ function toRad(Value) {
   }
    componentDidMount() {
      
-        this.interval = setInterval(() => {
-      this.checkLocation();
-    }, 120000);
-  }
-
-  checkLocation() {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        if (position) {
-          console.log(position);
-          var distance = geoFence(
-            31.415634,
-            74.175616,
-            position.coords.latitude,
-            position.coords.longitude
-          ).toFixed(5);
-          if (distance <= 1) {
-            console.log("inside the campus");
-          } else {
-            console.log("Outside campus");
-            this.setState({ message:MSG1,modalVisible: true });
-          }
-        } else {
-          console.log("position undefined");
-        }
-      },
-      error => {
-        this.setState({modalVisible:true,message:MSG2})
-      },
-      { enableHighAccuracy: false, timeout: 20000, maximumAge: 25000 }
-    );
   }
 
   componentWillUnmount() {
     console.log("unmounted");
   }
-  roleChip(role){
-    if(role == 'Teacher'){
-      return <View style={{left:13,flexDirection:'row',alignSelf:'flex-start',backgroundColor:'#0abde3',padding:3,borderRadius:4}}>
-          <Text style={{ color: "#fff", fontSize: 12 }}>
-                    Teacher
-          </Text>
-          </View>
-    }
-    else {
-      return <View style={{left:13,flexDirection:'row',alignSelf:'flex-start',backgroundColor:'#1abc9c',padding:3,borderRadius:4}}> 
-      <Text style={{ color: "#fff", fontSize: 12 }}>
-                    Student
-                  </Text>
-                  </View>
-      
-    }
-  }
+  
 
   showUsers() {
     let currentComponent = this.state;
@@ -224,54 +184,55 @@ function toRad(Value) {
       );
     }
   }
-  async changecolors(){
-
-    var payload = {
-    colorprimary:'#2A3963',
-    colorsecondary:'#0b2441',
-    textlight:'yellow',
-    textdark:'white',
-    background:'#0b2441',
-    chatbackground:'#F2F9FF'
-  }
- await this.props.changeTheme(payload)
-  this.setState({
-    colors:this.props.colors,
-
-  });
-    console.log('Updated:',this.state.colors)
-}
-
-async onRefresh() {
-  this.setState({ isFetching: true });
-  await this.getData();
-  this.setState({ isFetching: false });
-
-}
-  change = () => {
-    this.setState({ online: "#00b894" });
+  
+_onChangeFilterText = (filterText) => {
+    this.setState({filterText});
   };
+  checked1(props){
+      if(props == 'abusive'){
+          this.setState({checked1:true,checked2:false,checked3:false,reportReason:props})
+      }
+      else if(props == 'harassment'){
+        this.setState({checked1:false,checked2:true,checked3:false,reportReason:props})
+    }
+    else if(props == 'spam'){
+        this.setState({checked1:false,checked2:false,checked3:true,reportReason:props})
+    }
+  }
+  reportUser(){
+    var user = firebase.auth().currentUser;
+    console.log(user)
+    firebase.database().ref().child('Complaints').child(Math.floor(Math.random() * 238927874) + 1).set({
+        byUser: user.uid,
+        against: this.state.inmateID,
+        reason: this.state.reportReason,
+        
+    }).then(()=>{
+        this.setState({modalVisible:false})
+        alert('User reported to admin successfully.')
+    }).catch(()=>{
+        this.setState({modalVisible:false})
+        alert('An error occured, please try again.')
+    })
+  }
   render() {
+    const filterRegex = new RegExp(String(this.state.filterText), 'i');
+    const filter = (item) => (
+      filterRegex.test(item.name) 
+    );
+    const filteredData = this.state.store.filter(filter);
+
     return (
           <View style={{flex:1,backgroundColor:'red'}}>
             <View style={styles.header}>
                         <View style={styles.headerInner}>
     
     
-                        <Icon name="menu" size={26} onPress={()=>this.props.navigation.navigate('DrawerOpen')} color={'white'} />
-         
-                            <Text style={styles.headerText}>Friends</Text>
-                            
-    
-    
+                        <Icon name="arrow-left" size={26} onPress={()=>this.props.navigation.navigate('DrawerOpen')} color={'white'} />
+                            <Text style={styles.headerText}>Report</Text>
                         </View>
                     </View>
-          <View style={{ flex: 1,
-    padding: 2,
-    backgroundColor: this.props.colors.background}}>
-            <StatusBar backgroundColor="#0b2441" barStyle="light-content" />
-    
-            <Modal
+                    <Modal
               isVisible={this.state.modalVisible}
               //avoidKeyboard={true}
               onBackButtonPress={() => this.setState({ modalVisible: false })}
@@ -283,12 +244,12 @@ async onRefresh() {
                   width: "95%",
                   height: "60%",
                   backgroundColor: "white",
-                  borderColor: "#0b2441",
+                  borderColor: "#c23616",
                   borderWidth: 3
                 }}
               >
                 <View style={styles.headerPop}>
-                  <Icon name="map-pin" size={35} color="#0b2441" />
+                <Text style={styles.headerTextPop}>Sorry</Text>
     
                 </View>
     
@@ -301,52 +262,108 @@ async onRefresh() {
                     alignSelf: "center"
                   }}
                 >
-                  <Text style={styles.headerTextPop}>Sorry</Text>
     
-                  <Text style={{ fontSize: 22,textAlign:'center',color: "#0b2441" }}>
-                    {this.state.message}
+                  <Text style={{ fontSize: 17,textAlign:'center',color: "#0b2441" }}>
+                    Why do you think this user should not be here ..?
                   </Text>
+
+                  <CheckBox
+  center
+  title='Abusive Behavior'
+  checked={this.state.checked1}
+  onPress={()=>this.checked1('abusive')}
+/>
+<CheckBox
+  center
+  title='Harassing Other People'
+  checked={this.state.checked2}
+  onPress={()=>this.checked1('harassment')}
+
+/>
+<CheckBox
+  center
+  title='Spamming the Chat'
+  checked={this.state.checked3}
+  onPress={()=>this.checked1('spam')}
+
+/>
                 </View>
     
                 <TouchableOpacity
-                  onPress={() => this.setState({ modalVisible: false })}
+                  onPress={() => this.reportUser()}
                   activeOpacity={0.9}
                   style={{
                     position: "absolute",
                     width: "100%",
                     paddingVertical: 10,
-                    backgroundColor: "#0b2441",
+                    backgroundColor: "#c23616",
                     alignItems: "center",
                     justifyContent: "center",
                     bottom: 0
                   }}
                 >
-                  <Text style={{ color: "white" }}>TRY AGAIN</Text>
+                  <Text style={{ color: "white" }}>REPORT</Text>
                 </TouchableOpacity>
               </View>
             </Modal>
+                    <View style={{backgroundColor:'#c23616',
+                 padding:5,
+           borderRadius:2,height:50,justifyContent:'center',}}>
+       
+       <TextInput  
+        
+        //autoFocus={true}
+        placeholder="Search"
+        
+      selectionColor="#a5b1c2"
+      returnKeyType="search"
+      textBreakStrategy="highQuality"
+       underlineColorAndroid='transparent'
+       autoCorrect={false}
+       blurOnSubmit={true}
+       //onSubmitEditing={()=>this.onSubmit()}
+       //autoCapitalize='none'
+       placeholderTextColor="#bfbfbf"
+       onChangeText={this._onChangeFilterText}
+       placeholder='Search..'
+       style={{height:'100%',
+       justifyContent:'center',
+           textDecorationLine:'none',
+           textDecorationColor:'transparent',
+           backgroundColor:'white',
+           paddingHorizontal:16,
+           borderRadius:7,
+           color:'#2e3131',
+           fontWeight:'400',
+           alignItems:'center',
+           width:'100%',
+           //position:'relative',
+           fontStyle:'normal',
+           fontSize:14,
+              
+       }} />
+       </View>         
+        <View style={{ flex: 1,
+    padding: 2,
+    backgroundColor: this.props.colors.background}}>
+            <StatusBar backgroundColor="#0b2441" barStyle="light-content" />
+    
+            
     
             <Spinner visible={this.state.visible} />
     
-            
+           
             <View>
               <FlatList
                   extraData={this.props}
                 keyExtractor={(item, index) => index.toString()}
-                data={this.state.store}
-                onRefresh={() => this.onRefresh()}
-                refreshing={this.state.isFetching}
-                showsVerticalScrollIndicator={false}
+                data={filteredData}
+                 showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => (
                   <TouchableOpacity
                     activeOpacity={0.9}
                     onPress={() =>
-                      this.props.navigation.navigate("chat", {
-                        name: item.name,
-                        goid: item.id,
-                        gomail: item.email,
-                        goimage: item.image
-                      })
+                      this.setState({modalVisible:true,inmateID:item.id})
                     }
                     style={{
                       padding: 4,
@@ -382,19 +399,11 @@ async onRefresh() {
                         {item.name}
                       </Text>
                       </View>
-                      {/* <Text
-                        style={{
-                          fontWeight: "400",
-                          fontSize: 16,
-                          color: "#141c33"
-                        }}
-                      >
-                        {item.location.latitude}
-                      </Text> */}
+                      
                       
                     </View>
-                    {this.roleChip(item.role)}
                     </View>
+                    
                   </TouchableOpacity>
                 )}
               />

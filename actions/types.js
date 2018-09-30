@@ -1,0 +1,8 @@
+const CHANGE_THEME = 'CHANGE_THEME';
+const GET_USER = 'GET_USER';
+
+
+
+export {
+    CHANGE_THEME,GET_USER
+};

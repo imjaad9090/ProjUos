@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet,TouchableOpacity,ScrollView,Platform } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from "react-native-vector-icons/Feather";
-
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as Actions from '../../actions';
 // create a component
 class Groups extends Component {
 
@@ -36,12 +38,15 @@ class Groups extends Component {
 
                         <Text style={styles.headerText}>Groups</Text>
                         
-                        <Icon name="more-vertical" size={26} onPress={()=>this.props.navigation.pop()} color={'white'} />
 
 
                     </View>
                 </View>
-            <View style={styles.container}>
+            <View style={{flex: 1,
+        padding:9,
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        backgroundColor: this.props.colors.background,}}>
             
                 <LinearGradient  colors={['#07a585','#076585']} style={{width:'100%',height:140,alignItems:'center',justifyContent:'center',borderColor:'rgba(0,0,0,0.2)',borderWidth:2}}>
                 <Text style={{color:'white',fontSize:17,fontWeight:"bold",alignSelf:'center',marginVertical:6}}>Computer Science</Text>
@@ -101,4 +106,14 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default Groups;
+const mapStateToProps = (state) => {
+    return { colors: state.theme.appTheme };
+  }
+  
+  
+  function mapDispatchToProps(dispatch) {
+    return bindActionCreators(Actions, dispatch);
+  }
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(Groups);
+  

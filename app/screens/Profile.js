@@ -35,6 +35,8 @@ class Login extends React.Component {
             uri: 'https://im2.ezgif.com/tmp/ezgif-2-0a0115986d.png',
             basestring:null,
             visible: false,
+            name:'',
+            editview:false
         }
     }
 
@@ -86,6 +88,7 @@ Alert.alert('profile updated.')
      componentDidMount(){
         firebase.auth().onAuthStateChanged( user => {
             if(user){
+
            var database = firebase.database();
            database.ref('Accounts/'+user.uid).on('value',(snap) => {
             var imageLink = snap.val().image
@@ -133,7 +136,21 @@ else {
     componentWillMount(){
     }
 
-
+    updateName(){
+        if (this.state.name != '' && this.state.name.length > 10) {
+            var user = firebase.auth().currentUser;
+            var newname = this.state.name;
+            var database = firebase.database();
+                    database.ref('Accounts/'+user.uid).update({
+                        name : newname
+                      });
+                      this.setState({visible:false,editview:false})
+        }
+        else{
+            alert('Username must not be empty or less then 10 characters.')
+        }
+        
+    }
 
     upload(){
         var user = firebase.auth().currentUser;
@@ -209,14 +226,67 @@ else {
             </LinearGradient>
             </TouchableWithoutFeedback>
             </View>
+            
+            {this.state.editview && 
+            <View style={{width:'100%',alignSelf:'center',alignItems:'center'}}>
+            <TextInput  
+        autoFocus={true}
+      selectionColor="#a5b1c2"
+      returnKeyType="done"
+      textBreakStrategy="highQuality"
+       underlineColorAndroid='transparent'
+       autoCorrect={false}
+       blurOnSubmit={true}
+       //onSubmitEditing={()=>this.onSubmit()}
+       autoCapitalize='words'
+       maxLength={20}
+       onChangeText={(text)=>this.setState({name:text})}
+       style={{paddingVertical:4,
+       justifyContent:'center',
+           textDecorationLine:'none',
+           textDecorationColor:'transparent',
+           backgroundColor:'white',
+           marginVertical:10,
+           textAlign:'center',
+           paddingHorizontal:16,
+           borderColor:'#000428',
+           borderWidth:3,
+           borderRadius:7,
+           color:'#2e3131',
+           fontWeight:'400',
+           alignItems:'center',
+           width:'50%',
+           alignSelf:'center',
+           //position:'relative',
+           fontStyle:'normal',
+           fontSize:14,
+              
+       }} />
+
+       <TouchableOpacity onPress={()=>this.updateName()} activeOpacity={0.9} style={{width:'50%',paddingVertical:9,borderRadius:12,alignItems:'center',justifyContent:'center',backgroundColor:'#192a56'}}>
+       <Text style={{color:'#fff',fontWeight:"400",fontSize:20}}>Update</Text>
+
+       </TouchableOpacity>
+
+       </View>
+            }
+            {!this.state.editview && 
             <View style={{marginVertical:20,alignItems:'center'}}>
+
+          
+            <View>
+            <View style={{flexDirection:'row',alignItems:'center',paddingVertical:5}}>
             <Text style={{color:'#2C2D33',fontWeight:"400",fontSize:20}}>{this.state.uname}</Text>
-            <Text style={{color:'#3B3C43',fontSize:15}}>{this.state.urole}</Text>
-            <Text style={{color:'#3B3C43',fontSize:15}}>{this.state.uemail}</Text>
+            <Icon name="pencil" onPress={()=>this.setState({editview:true})} style={{paddingHorizontal:3}} size={22} color="#273c75" />
 
             </View>
-         <Button title="logout" color="#568" onPress={()=>this.delete()}/>
-           
+
+            <Text style={{color:'#3B3C43',fontSize:15,}}>{this.state.urole}</Text>
+            <Text style={{color:'#3B3C43',fontSize:15}}>{this.state.uemail}</Text>
+            
+            </View>
+         </View>
+            }
 
     </View>
        

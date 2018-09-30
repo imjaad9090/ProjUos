@@ -28,10 +28,12 @@ import Public from './screens/Public';
 import CS from './screens/CS';
 import PT from './screens/PT';
 import BD from './screens/BD';
+import Report from './screens/Report';
+import { Provider } from 'react-redux';
+import store from '../store';
 //import {AuthStack} from "./config/routes";
 //import {AppStack} from './config/routes';
 import { fromLeft,fromTop,fadeIn,zoomIn,zoomOut,flipY,flipX } from 'react-navigation-transitions';
-
 
 
 
@@ -167,7 +169,7 @@ const SemiAppStack = StackNavigator(
             tabBarIcon: ({ tintColor }) => <Icon name="chat-bubble" size={23} color={tintColor} />
         }
     },
-    Home : {
+   /*  Home : {
         screen : Profile,
         navigationOptions:(navigation)=> ({
             title:'Profile',
@@ -182,7 +184,7 @@ const SemiAppStack = StackNavigator(
             },
             tabBarIcon: ({ tintColor }) => <Icon name="account-circle" size={25} color={tintColor} />
         })
-    },
+    }, */
 
 },{
     headerMode:'none',
@@ -214,6 +216,7 @@ cs : {screen : CS},
 pt : {screen : PT},
 bd : {screen : BD},
 Home :{screen : Profile},
+Report :{screen : Report}
 
 },{
     headerMode:'none'
@@ -221,11 +224,11 @@ Home :{screen : Profile},
 );
 
 
-const AppStack = StackNavigator({
+const AppStack = DrawerNavigator({
     
     All : {screen : SemiAppStack},
 },{
-    headerMode:'none'
+    contentComponent:sidebar
 });
 
 
@@ -242,7 +245,7 @@ const AuthStack = StackNavigator({
 
 
 
-export default App= SwitchNavigator(
+const Body= SwitchNavigator(
   {
     AuthLoading: Authloading,
     App: AppStack,
@@ -254,6 +257,20 @@ export default App= SwitchNavigator(
 
   }
 );
+
+export default class App extends Component{
+    constructor(props){
+        super(props)
+        
+    }
+    render(){
+        return(
+            <Provider store={store}>
+            <Body />
+      </Provider>
+        )
+    }
+}
 
 
   

@@ -1,11 +1,15 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet,Platform } from 'react-native';
 import { GiftedChat } from "react-native-gifted-chat";
 import firebase from "react-native-firebase";
 import md5 from './lib/md5';
 import LinearGradient from 'react-native-linear-gradient';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as Actions from '../../actions';
+import Icon from "react-native-vector-icons/Feather";
 
 // create a component
 class Chat extends Component {
@@ -34,6 +38,8 @@ class Chat extends Component {
         headerStyle:{
             backgroundColor:'#2A3963'
         },
+        drawerLockMode: 'locked-closed',
+
         headerTitleStyle:{
             color:'#fff'
         }
@@ -134,7 +140,20 @@ class Chat extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <View style={{flex: 1,
+                backgroundColor:this.props.colors.background}}>
+                 <View style={styles.header}>
+                        <View style={styles.headerInner}>
+    
+    
+                        <Icon name="arrow-left" size={26} onPress={()=>this.props.navigation.pop()} color={'white'} />
+         
+                            <Text style={styles.headerText}>{this.props.navigation.state.params.name}</Text>
+                            
+    
+    
+                        </View>
+                    </View>
          <Spinner visible={this.state.visible}/>
 
             <GiftedChat
@@ -157,7 +176,41 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor:'#F2F9FF'
     },
+    header: {
+        height: 50,
+        paddingHorizontal: 13,
+        alignItems: 'center',
+        //justifyContent: 'center',
+        marginTop: Platform.OS == "ios" ? 20 : 0,
+        flexDirection: 'row',
+    
+        backgroundColor: '#0b2441'
+    },
+    headerInner: {
+      flex: 1,
+      backgroundColor: 'transparent',
+      flexDirection: 'row'
+    },
+    headerText: {
+        flexDirection: 'row',
+        flex: 1,
+        textAlign: 'center',
+        backgroundColor: 'transparent',
+        fontSize: 19,
+        color: 'white',
+        fontWeight: '400'
+    },
 });
 
 //make this component available to the app
-export default Chat;
+const mapStateToProps = (state) => {
+    return { colors: state.theme.appTheme };
+  }
+  
+  
+  function mapDispatchToProps(dispatch) {
+    return bindActionCreators(Actions, dispatch);
+  }
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(Chat);
+  
