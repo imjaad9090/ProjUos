@@ -1,8 +1,10 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,TouchableOpacity,ScrollView,Platform,Linking } from 'react-native';
+import { View, Text, StyleSheet,TouchableOpacity,ScrollView,Platform,Linking,Switch } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from "react-native-vector-icons/Feather";
+import { CheckBox } from 'react-native-elements'
+
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as Actions from '../../actions';
@@ -22,6 +24,10 @@ class Settings extends Component {
 
     constructor(){
         super()
+        this.state={
+            checked:false,
+            switch:false,
+        }
 
     }
 
@@ -67,11 +73,54 @@ class Settings extends Component {
 
                         
         <Text style={{color:'purple',fontSize:15,fontWeight:'500'}}>General</Text>
-        <TouchableOpacity activeOpacity={0.9} onPress={()=>Linking.openURL('https://play.google.com/store?hl=en')}  style={{marginVertical:7,shadowColor: "#000000",shadowOpacity: 0.8,shadowRadius: 2,shadowOffset: {height: 1,width: 1},width:'100%',alignItems:'flex-start', paddingVertical:8,backgroundColor:'white',borderRadius:3}}>
+        <TouchableOpacity activeOpacity={0.9} onPress={()=>console.log('th')}  style={{marginVertical:7,shadowColor: "#000000",shadowOpacity: 0.8,shadowRadius: 2,shadowOffset: {height: 1,width: 1},width:'100%',alignItems:'flex-start', paddingVertical:8,backgroundColor:'white',borderRadius:3}}>
                
 
                
-                <Text style={{color:'#576574',fontSize:15,fontWeight:'400'}}>Show User Mode</Text>
+                <Text style={{color:'#576574',fontSize:15,fontWeight:'400',margin:5}}>Sort User List</Text>
+            
+                    <View style={{flexDirection:'row',alignItems:'center',paddingHorizontal:8}}>
+                    <View style={{flex:1,flexDirection:'row',justifyContent:'flex-start'}}>
+                    <Text style={{color:'#576574',fontSize:15,fontWeight:'400'}}>By role</Text>
+
+                    </View>
+                    <View style={{flex:1,flexDirection:'row',justifyContent:'flex-end'}}>
+                    <Switch
+                    style={{width:60}}
+                    tintColor='#0b2441'
+                    thumbTintColor='white'
+                    value={this.state.switch}
+                    onValueChange={()=>this.setState({switch:!this.state.switch})}
+                    
+                    
+                    />                    
+                    </View>
+                    </View>
+                    <View style={{flexDirection:'row',alignItems:'center',paddingHorizontal:8}}>
+                    <View style={{flex:1,flexDirection:'row',justifyContent:'flex-start'}}>
+                    <Text style={{color:'#576574',fontSize:15,fontWeight:'400'}}>By name</Text>
+
+                    </View>
+                    <View style={{flex:1,flexDirection:'row',justifyContent:'flex-end'}}>
+                    <Switch
+                    style={{width:60}}
+                    tintColor='#0b2441'
+                    thumbTintColor='white'
+                    value={this.state.switch}
+                    onValueChange={()=>this.setState({switch:!this.state.switch})}
+                    
+                    
+                    />                    
+                    </View>
+                    </View>
+
+            </TouchableOpacity>
+
+                    <Text style={{color:'#10ac84',fontSize:15,fontWeight:'500'}}>Rate Application</Text>
+                
+                    <TouchableOpacity activeOpacity={0.9} onPress={()=>Linking.openURL('https://play.google.com/store?hl=en')}  style={{marginVertical:7,shadowColor: "#000000",shadowOpacity: 0.8,shadowRadius: 2,shadowOffset: {height: 1,width: 1},width:'100%',
+                alignItems:'center',justifyContent:'center',paddingVertical:8,backgroundColor:'white',borderRadius:3}}>
+                <Text style={{color:'#576574',fontSize:15,fontWeight:'400'}}>Rate Application</Text>
             </TouchableOpacity>
 
 
