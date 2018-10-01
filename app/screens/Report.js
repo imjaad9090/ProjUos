@@ -228,7 +228,7 @@ _onChangeFilterText = (filterText) => {
                         <View style={styles.headerInner}>
     
     
-                        <Icon name="arrow-left" size={26} onPress={()=>this.props.navigation.navigate('DrawerOpen')} color={'white'} />
+                        <Icon name="arrow-left" size={26} onPress={()=>this.props.navigation.pop()} color={'white'} />
                             <Text style={styles.headerText}>Report</Text>
                         </View>
                     </View>

@@ -29,6 +29,7 @@ import store from '../store';
 //import {AuthStack} from "./config/routes";
 //import {AppStack} from './config/routes';
 import { fromLeft,fromTop,fadeIn,zoomIn,zoomOut,flipY,flipX } from 'react-navigation-transitions';
+import Settings from './screens/Settings';
 
 
 
@@ -211,7 +212,8 @@ cs : {screen : CS},
 pt : {screen : PT},
 bd : {screen : BD},
 Home :{screen : Profile},
-Report :{screen : Report}
+Report :{screen : Report},
+Settings : {screen : Settings},
 
 },{
     headerMode:'none'

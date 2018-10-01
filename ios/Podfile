@@ -35,6 +35,7 @@ target 'Wick' do
 
   pod 'RNSnackbar', :path => '../node_modules/react-native-snackbar'
 
+
 end
 
 

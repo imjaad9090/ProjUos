@@ -120,7 +120,9 @@ async updateStatus(){
       this.checkLocation();
     }, 120000);
     
-    DeviceEventEmitter.addListener(
+   if(Platform.os == 'android')
+    {
+      DeviceEventEmitter.addListener(
       'ON_HOME_BUTTON_PRESSED',
       async () => {
         console.log('You tapped the home button!')
@@ -130,6 +132,7 @@ async updateStatus(){
                 online : false
               });
      })
+    }
    
 
    /*  this.props.navigation.addListener('willBlur', (route) => { 
@@ -248,7 +251,8 @@ async updateStatus(){
                 id: child.val().uid,
                 image: child.val().image,
                 status: child.val().online,
-                location: child.val().location
+                location: child.val().location,
+                bio: child.val().bio
               });
             } else {
               console.log("not one of us");
@@ -289,6 +293,33 @@ async updateStatus(){
           style={{ width: 10, height: 10, resizeMode: "contain" }}
         />
       );
+    }
+  }
+  formatBio(props){
+    if(props.length < 40){
+                    return    <Text
+                        style={{
+                          fontWeight: "400",
+                          fontSize: 14,
+                          color: "#8395a7"
+                        }}
+                      >
+                        {props}
+                      </Text>
+    }
+    else {
+      var res = props.slice(0, 40);
+        var final = res.concat('..')
+        return    <Text
+        style={{
+          fontWeight: "400",
+          fontSize: 14,
+          color: "#8395a7"
+        }}
+      >
+        {final}
+      </Text>
+
     }
   }
   
@@ -478,6 +509,8 @@ async onRefresh() {
                           color: this.props.colors.textdark,}}>
                         {item.name}
                       </Text>
+
+                      {this.formatBio(item.bio)} 
                       </View>
                       {/* <Text
                         style={{

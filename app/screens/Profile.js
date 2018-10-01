@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Dimensions,ImageBackground,ActivityIndicator, Button,StatusBar,Image,TouchableOpacity,TextInput,Alert,AsyncStorage,Platform,TouchableWithoutFeedback } from 'react-native';
+import { View, Text, StyleSheet,Dimensions,Linking,ImageBackground,ActivityIndicator, Button,StatusBar,Image,TouchableOpacity,TextInput,Alert,AsyncStorage,Platform,TouchableWithoutFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Container, Header, Content, Thumbnail,H1,H2,H3 } from 'native-base';
 import Drawer from 'react-native-drawer'
@@ -10,7 +10,8 @@ import TimeAgo from 'react-native-timeago';
 import firebase from 'react-native-firebase';
 import ImagePicker from 'react-native-image-crop-picker';
 import LinearGradient from 'react-native-linear-gradient';
-const window = Dimensions.get('window')
+const window = Dimensions.get('window');
+
 import Spinner from 'react-native-loading-spinner-overlay';
 import {
     CachedImage,
@@ -36,8 +37,10 @@ class Login extends React.Component {
             uri: 'https://im2.ezgif.com/tmp/ezgif-2-0a0115986d.png',
             basestring:null,
             visible: false,
-            name:'',
-            editview:false
+            uname:'',
+            ubio:'',
+            editview:false,
+            shareView:false
         }
     }
 
@@ -136,17 +139,19 @@ else {
     }
 
     updateName(){
-        if (this.state.name != '' && this.state.name.length > 10) {
+        if (this.state.uname != '' && this.state.uname.length > 10 && this.state.ubio.length > 10 ) {
             var user = firebase.auth().currentUser;
-            var newname = this.state.name;
+            var newname = this.state.uname;
+            var newbio  = this.state.ubio;
             var database = firebase.database();
                     database.ref('Accounts/'+user.uid).update({
-                        name : newname
+                        name : newname,
+                        bio : newbio
                       });
                       this.setState({visible:false,editview:false})
         }
         else{
-            alert('Username must not be empty or less then 10 characters.')
+            alert('Username and bio must not be empty or less then 10 characters.')
         }
         
     }
@@ -201,13 +206,31 @@ else {
               });
               
         }
+        shareToWhatsApp(text){
+            //Linking.openURL(`fb-messenger://user-thread/send?text=${text}`);
+
+            //Linking.openURL(`fb-messenger://user-thread/`);
+            Linking.openURL(`whatsapp://send?text=${text}`);
+          }
+
+          shareToMessenger(text){
+            //Linking.openURL(`fb-messenger://user-thread/send?text=${text}`);
+
+            Linking.openURL(`fb-messenger://user-thread/`);
+            //Linking.openURL(`facebook://send?text=${text}`);
+          }
+
+          shareToFb(){
+            Linking.openURL("https://www.facebook.com/");
+          }
+
 
     render()  {
         const { navigation } = this.props;
 
         return (
          <View style={styles.container}>
-            <View style={{alignItems:'center',backgroundColor:'white', paddingBottom:65,borderBottomEndRadius:window.width-230,borderBottomStartRadius:window.width-230}}>
+            <View style={{alignItems:'center',backgroundColor:'white', paddingBottom:65,borderBottomEndRadius:window.width-230,borderBottomStartRadius:window.width-230,width:'100%'}}>
             <View style={{paddingTop:20}}>
             
             <LinearGradient   start={{x: 0.0, y: 0.25}} end={{x: 0.5, y: 1.0}}
@@ -225,55 +248,94 @@ else {
             </TouchableWithoutFeedback>
             </View>
             
-            {this.state.editview && 
-            <View style={{width:window.widtha,flex:1,alignItems:'center'}}>
+            
+            {this.state.editview ?
+            
+            <View style={{width:'100%'}}>
+
             <TextInput  
-        autoFocus={true}
-      selectionColor="#a5b1c2"
-      returnKeyType="done"
-      textBreakStrategy="highQuality"
-       underlineColorAndroid='transparent'
-       autoCorrect={false}
-       blurOnSubmit={true}
-       //onSubmitEditing={()=>this.onSubmit()}
-       autoCapitalize='words'
-       maxLength={20}
-       onChangeText={(text)=>this.setState({name:text})}
-       style={{paddingVertical:4,
-       justifyContent:'center',
-           textDecorationLine:'none',
-           textDecorationColor:'transparent',
-           backgroundColor:'white',
-           marginVertical:10,
-           textAlign:'center',
-           paddingHorizontal:16,
-           borderColor:'#000428',
-           borderWidth:3,
-           borderRadius:7,
-           color:'#2e3131',
-           fontWeight:'400',
-           alignItems:'center',
-           width:'50%',
-           alignSelf:'center',
-           //position:'relative',
-           fontStyle:'normal',
-           fontSize:14,
-              
-       }} />
+       autoFocus={true}
+     selectionColor="#a5b1c2"
+     returnKeyType="done"
+     textBreakStrategy="highQuality"
+      underlineColorAndroid='transparent'
+      autoCorrect={false}
+      blurOnSubmit={true}
+      value={this.state.uname}
+      //onSubmitEditing={()=>this.onSubmit()}
+      autoCapitalize='words'
+      maxLength={20}
+      onChangeText={(text)=>this.setState({uname:text})}
+      style={{paddingVertical:4,
+      justifyContent:'center',
+          textDecorationLine:'none',
+          textDecorationColor:'transparent',
+          backgroundColor:'white',
+          marginVertical:5,
+          textAlign:'center',
+          paddingHorizontal:16,
+          borderColor:'#000428',
+          borderWidth:1,
+          borderRadius:4,
+          color:'#2e3131',
+          fontWeight:'400',
+          alignItems:'center',
+          width:'80%',
+          alignSelf:'center',
+          //position:'relative',
+          fontStyle:'normal',
+          fontSize:14,
+             
+      }} />
 
-       <TouchableOpacity onPress={()=>this.updateName()} activeOpacity={0.9} style={{width:'50%',paddingVertical:9,borderRadius:12,alignItems:'center',justifyContent:'center',backgroundColor:'#192a56'}}>
-       <Text style={{color:'#fff',fontWeight:"400",fontSize:20}}>Update</Text>
+      <TextInput  
+       autoFocus={true}
+     selectionColor="#a5b1c2"
+     returnKeyType="done"
+     textBreakStrategy="highQuality"
+      underlineColorAndroid='transparent'
+      autoCorrect={false}
+      value={this.state.ubio}
 
-       </TouchableOpacity>
+      blurOnSubmit={true}
+      //onSubmitEditing={()=>this.onSubmit()}
+      autoCapitalize='words'
+      maxLength={300}
+      onChangeText={(bio)=>this.setState({ubio:bio})}
+      style={{paddingVertical:4,
+      justifyContent:'center',
+          textDecorationLine:'none',
+          textDecorationColor:'transparent',
+          backgroundColor:'white',
+          marginVertical:5,
+          textAlign:'center',
+          paddingHorizontal:16,
+          borderColor:'#000428',
+          borderWidth:1,
+          borderRadius:4,
+          color:'#2e3131',
+          fontWeight:'400',
+          alignItems:'center',
+          width:'80%',
+          alignSelf:'center',
+          //position:'relative',
+          fontStyle:'normal',
+          fontSize:14,
+             
+      }} />
 
-       </View>
-            }
-            {!this.state.editview && 
-            <View style={{marginVertical:13,alignItems:'center',}}>
+      <TouchableOpacity onPress={()=>this.updateName()} activeOpacity={0.9} style={{alignSelf:'center',width:'70%',paddingVertical:12,borderRadius:12,alignItems:'center',justifyContent:'center',backgroundColor:'#192a56'}}>
+      <Text style={{color:'#fff',fontWeight:"400",fontSize:13}}>Update</Text>
 
-          
-            <View>
-            <View style={{paddingHorizontal:6,flexDirection:'column',alignItems:'center',paddingVertical:5,flexWrap:'wrap'}}>
+      </TouchableOpacity>
+           </View>
+        :
+        
+
+
+        <View style={{marginVertical:13,alignItems:'center',width:'100%'}}>
+ 
+           <View style={{paddingHorizontal:6,flexDirection:'column',alignItems:'center',paddingVertical:5,flexWrap:'wrap'}}>
             <Text style={{color:'#2C2D33',fontWeight:"500",fontSize:20}}>{this.state.uname}</Text>
             <Text style={{color:'#3B3C43',fontSize:15,textAlign:'center'}}>{this.state.ubio}</Text>
             <Text style={{color:'#3B3C43',fontSize:15}}>{this.state.uemail}</Text>
@@ -281,33 +343,54 @@ else {
           {/*   <Icon name="pencil" onPress={()=>this.setState({editview:true})} style={{paddingHorizontal:3}} size={22} color="#273c75" /> */}
 
             </View>
-
             {/* <Text style={{color:'#3B3C43',fontSize:15,}}>{this.state.urole}</Text> */}
-
-            
-            </View>
-
-
-
             <View style={{width:'100%',paddingVertical:10,flexDirection:'row',alignItems:'center'}}>
             <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-                <View style={{width:60,height:60,borderRadius:30,backgroundColor:'#ecf0f1',alignItems:'center',justifyContent:'center'}}>
+                <TouchableOpacity style={{width:60,height:60,borderRadius:30,backgroundColor:'#ecf0f1',alignItems:'center',justifyContent:'center'}}>
                 <Icon name="cog" onPress={()=>this.setState({editview:true})} size={23} color="#bdc3c7" />  
-                </View>
+                </TouchableOpacity>
             </View>
                 <View  style={styles.separator} />
             <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-                <View style={{width:60,height:60,borderRadius:30,backgroundColor:'#273c75',alignItems:'center',justifyContent:'center'}}>
-                <Icon name="pencil" onPress={()=>this.setState({editview:true})} size={23} color="#fff" />  
-                </View>
+                <TouchableOpacity onPress={()=>this.setState({editview:true})} activeOpacity={0.9} style={{width:60,height:60,borderRadius:30,backgroundColor:'#273c75',alignItems:'center',justifyContent:'center'}}>
+                <Icon name="pencil"  size={23} color="#fff" />  
+                </TouchableOpacity>
             </View>
             </View>
          </View>
-            }
+            
+        }
+            
 
             </View>
+            {this.state.shareView && 
+            <View style={{width:'100%',paddingVertical:10,flexDirection:'row',alignItems:'center'}}>
+            
+                <TouchableOpacity activeOpacity={0.9} onPress={()=>this.shareToMessenger()} style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+                <View style={{width:60,height:60,borderRadius:30,backgroundColor:'#fff',alignItems:'center',justifyContent:'center'}}>
+                <Image source={require('./Images/messenger1.png')} style={{width:'60%',height:'60%'}} resizeMode='contain' />
 
-            <TouchableOpacity activeOpacity={0.9} style={{position:'absolute',bottom:0,width:'100%',alignItems:'center',justifyContent:'center',paddingVertical:14,backgroundColor:'#273c75'}}>
+                </View>
+            </TouchableOpacity>
+
+            <View  style={styles.separator} />
+            <TouchableOpacity activeOpacity={0.9} onPress={()=>this.shareToWhatsApp('Download unichat from playstore.')} style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+                <View style={{width:60,height:60,borderRadius:30,backgroundColor:'#fff',alignItems:'center',justifyContent:'center'}}>
+                <Image source={require('./Images/whatsapp1.png')} style={{width:'60%',height:'60%'}} resizeMode='contain' />
+                </View>
+            </TouchableOpacity>
+
+                <View  style={styles.separator} />
+
+             <TouchableOpacity activeOpacity={0.9} onPress={()=>this.shareToFb()} style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+                <View style={{width:60,height:60,borderRadius:30,backgroundColor:'#fff',alignItems:'center',justifyContent:'center'}}>
+                <Image source={require('./Images/facebook.png')} style={{width:'60%',height:'60%'}} resizeMode='contain' />
+
+                </View>
+            </TouchableOpacity>
+            </View>
+            }
+            <TouchableOpacity onPress={()=>this.setState({shareView:!this.state.shareView})} activeOpacity={0.9} style={{position:'absolute',bottom:0,width:'100%',alignItems:'center',justifyContent:'center',paddingVertical:14,backgroundColor:'#273c75'}}>
             <Text style={{color:'#fff',fontSize:17,textAlign:'center'}}>Share Unichat</Text>
 
             </TouchableOpacity>

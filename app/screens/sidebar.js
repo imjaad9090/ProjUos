@@ -145,7 +145,7 @@ async changecolorslite(){
               </Right>
             </ListItem>
 
-              <ListItem icon>
+              <ListItem onPress={()=>this.props.navigation.navigate('Settings')} icon>
               <Left>
                 <Icon name="settings" size={21} color="#0F3057" />
               </Left>
