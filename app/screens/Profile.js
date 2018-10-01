@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,ImageBackground,ActivityIndicator, Button,StatusBar,Image,TouchableOpacity,TextInput,Alert,AsyncStorage,Platform,TouchableWithoutFeedback } from 'react-native';
+import { View, Text, StyleSheet,Dimensions,ImageBackground,ActivityIndicator, Button,StatusBar,Image,TouchableOpacity,TextInput,Alert,AsyncStorage,Platform,TouchableWithoutFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Container, Header, Content, Thumbnail,H1,H2,H3 } from 'native-base';
 import Drawer from 'react-native-drawer'
@@ -10,6 +10,7 @@ import TimeAgo from 'react-native-timeago';
 import firebase from 'react-native-firebase';
 import ImagePicker from 'react-native-image-crop-picker';
 import LinearGradient from 'react-native-linear-gradient';
+const window = Dimensions.get('window')
 import Spinner from 'react-native-loading-spinner-overlay';
 import {
     CachedImage,
@@ -95,12 +96,16 @@ Alert.alert('profile updated.')
             var name = snap.val().name
             var role = snap.val().role
             var email = snap.val().email
+            var bio = snap.val().bio
+
 
             console.log(imageLink)
             this.setState({link:imageLink})
             this.setState({uname:name})
             this.setState({urole:role})
             this.setState({uemail:email})
+            this.setState({ubio:bio})
+
 
         });
                      
@@ -112,13 +117,7 @@ else {
 
           });
 
-        {/*var database = firebase.database();
-        database.ref('Accounts/'+user.uid).once('value').then(function(snapshot) {
-
-            console.log(snapshot)
-
-            // ...
-          });*/}
+        
 
           var user = firebase.auth().currentUser;
 
@@ -208,27 +207,26 @@ else {
 
         return (
          <View style={styles.container}>
-         
-            <Spinner visible={this.state.visible}/>
-            <View>
+            <View style={{alignItems:'center',backgroundColor:'white', paddingBottom:65,borderBottomEndRadius:window.width-230,borderBottomStartRadius:window.width-230}}>
+            <View style={{paddingTop:20}}>
             
             <LinearGradient   start={{x: 0.0, y: 0.25}} end={{x: 0.5, y: 1.0}}
- colors={['#0F2027','#203A43','#2c5364']} style={{width:210,height:210,borderRadius:105,justifyContent:'center',alignItems:'center'}} >
+ colors={['transparent','transparent','transparent']} style={{width:160,height:160,borderRadius:80,justifyContent:'center',alignItems:'center',backgroundColor:'transparent'}} >
             
-            <CachedImage style={{width:200,height:200,borderRadius:100}} source={{uri:this.state.link}}/>
+            <CachedImage style={{width:'95%',height:'95%',borderRadius:80}} source={{uri:this.state.link}}/>
             </LinearGradient>
             <TouchableWithoutFeedback onPress={()=>this.picker()}>
             
-            <LinearGradient colors={['#000428','#004e92']} style={{position:'absolute',alignSelf:'flex-end',bottom:0,right:20,width:48,height:48,borderRadius:24,backgroundColor:'#568',alignItems:"center",justifyContent:'center'}}>
+            <LinearGradient colors={['#000428','#004e92']} style={{position:'absolute',alignSelf:'flex-end',bottom:0,right:20,width:44,height:44,borderRadius:22,backgroundColor:'#568',alignItems:"center",justifyContent:'center'}}>
 
-                <Icon name="camera" size={22} color="white" />
+                <Icon name="camera" size={20} color="white" />
 
             </LinearGradient>
             </TouchableWithoutFeedback>
             </View>
             
             {this.state.editview && 
-            <View style={{width:'100%',alignSelf:'center',alignItems:'center'}}>
+            <View style={{width:window.widtha,flex:1,alignItems:'center'}}>
             <TextInput  
         autoFocus={true}
       selectionColor="#a5b1c2"
@@ -271,22 +269,48 @@ else {
        </View>
             }
             {!this.state.editview && 
-            <View style={{marginVertical:20,alignItems:'center'}}>
+            <View style={{marginVertical:13,alignItems:'center',}}>
 
           
             <View>
-            <View style={{flexDirection:'row',alignItems:'center',paddingVertical:5}}>
-            <Text style={{color:'#2C2D33',fontWeight:"400",fontSize:20}}>{this.state.uname}</Text>
-            <Icon name="pencil" onPress={()=>this.setState({editview:true})} style={{paddingHorizontal:3}} size={22} color="#273c75" />
+            <View style={{paddingHorizontal:6,flexDirection:'column',alignItems:'center',paddingVertical:5,flexWrap:'wrap'}}>
+            <Text style={{color:'#2C2D33',fontWeight:"500",fontSize:20}}>{this.state.uname}</Text>
+            <Text style={{color:'#3B3C43',fontSize:15,textAlign:'center'}}>{this.state.ubio}</Text>
+            <Text style={{color:'#3B3C43',fontSize:15}}>{this.state.uemail}</Text>
+
+          {/*   <Icon name="pencil" onPress={()=>this.setState({editview:true})} style={{paddingHorizontal:3}} size={22} color="#273c75" /> */}
 
             </View>
 
-            <Text style={{color:'#3B3C43',fontSize:15,}}>{this.state.urole}</Text>
-            <Text style={{color:'#3B3C43',fontSize:15}}>{this.state.uemail}</Text>
+            {/* <Text style={{color:'#3B3C43',fontSize:15,}}>{this.state.urole}</Text> */}
+
             
+            </View>
+
+
+
+            <View style={{width:'100%',paddingVertical:10,flexDirection:'row',alignItems:'center'}}>
+            <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+                <View style={{width:60,height:60,borderRadius:30,backgroundColor:'#ecf0f1',alignItems:'center',justifyContent:'center'}}>
+                <Icon name="cog" onPress={()=>this.setState({editview:true})} size={23} color="#bdc3c7" />  
+                </View>
+            </View>
+                <View  style={styles.separator} />
+            <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+                <View style={{width:60,height:60,borderRadius:30,backgroundColor:'#273c75',alignItems:'center',justifyContent:'center'}}>
+                <Icon name="pencil" onPress={()=>this.setState({editview:true})} size={23} color="#fff" />  
+                </View>
+            </View>
             </View>
          </View>
             }
+
+            </View>
+
+            <TouchableOpacity activeOpacity={0.9} style={{position:'absolute',bottom:0,width:'100%',alignItems:'center',justifyContent:'center',paddingVertical:14,backgroundColor:'#273c75'}}>
+            <Text style={{color:'#fff',fontSize:17,textAlign:'center'}}>Share Unichat</Text>
+
+            </TouchableOpacity>
 
     </View>
        
@@ -299,9 +323,8 @@ else {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#FBFBFD',
+        backgroundColor: '#ecf0f1',
     },
     image:{
         width:400,
@@ -320,6 +343,14 @@ const styles = StyleSheet.create({
         fontSize: 16,
         //color: "#2c3e50"
       },
+      separator:{
+        borderLeftWidth: 1,
+        alignSelf:'center',
+        borderColor: '#dcdde1',
+        
+        height: '85%',
+        backgroundColor:'transparent',
+      }
       
 });
 

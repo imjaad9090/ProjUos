@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Platform } from 'react-native';
+import { View, Text, StyleSheet,Platform,TouchableWithoutFeedback,Keyboard } from 'react-native';
 import { GiftedChat } from "react-native-gifted-chat";
 import firebase from "react-native-firebase";
 import md5 from './lib/md5';
@@ -14,9 +14,7 @@ class Public extends Component {
 
     static navigationOptions =({ navigation }) =>{
         drawerLockMode: 'locked-closed'
-
-        
-        
+    
     }
 
     constructor(props){
@@ -146,6 +144,8 @@ class Public extends Component {
 
     render() {
         return (
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+
             <View style={{  flex: 1,
                 backgroundColor:this.props.colors.background}}>
              <View style={styles.header}>
@@ -170,6 +170,7 @@ class Public extends Component {
                 }}
                 />
       </View>
+      </TouchableWithoutFeedback>
         );
     }
 }

@@ -45,22 +45,10 @@ firebase.database().ref().child('Accounts').child(user.uid).set({
     name: this.state.username,
     role: this.state.role,
     image:"https://firebasestorage.googleapis.com/v0/b/unichatio-f63db.appspot.com/o/user.png?alt=media&token=644dcea8-1c60-4615-998c-8e29627b1f8b",
-    online: this.state.online
+    online: this.state.online,
+    bio:'Apparently, this user prefers to keep an air of mystery about them.'
 })
-        {/*db.child('Users').push({
-            email: this.state.email,
-            uid: user.uid,
-            name: this.state.username,
-            role: this.state.role
-        })
-        db.child('Profile').push({
-            email: this.state.email,
-            uid: user.uid,
-            name: this.state.username,
-            role: this.state.role,
-            image:" "
-        })*/}
-
+        
 
 var user = firebase.auth().currentUser;
 

@@ -3,6 +3,7 @@ package com.wick;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.evanjmg.RNHomePressedPackage;
 import com.azendoo.reactnativesnackbar.SnackbarPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
@@ -33,6 +34,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNHomePressedPackage(),
             new SnackbarPackage(),
             new RNFetchBlobPackage(),
             new PickerPackage(),

@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Platform } from 'react-native';
+import { View, Text, StyleSheet,Platform,TouchableWithoutFeedback,Keyboard } from 'react-native';
 import { GiftedChat } from "react-native-gifted-chat";
 import firebase from "react-native-firebase";
 import md5 from './lib/md5';
@@ -136,10 +136,21 @@ class Chat extends Component {
 
 
 
+showStatus(){
+    console.log(this.props.navigation.state.params.online)
+    if(this.props.navigation.state.params.online == true)
+   return <View 
+   style={{backgroundColor:'#2ecc71',width:10,height:10,borderRadius:5}}/>
+    else {
+        console.log('offline')
+    }
 
+}
 
     render() {
         return (
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+
             <View style={{flex: 1,
                 backgroundColor:this.props.colors.background}}>
                  <View style={styles.header}>
@@ -147,9 +158,10 @@ class Chat extends Component {
     
     
                         <Icon name="arrow-left" size={26} onPress={()=>this.props.navigation.pop()} color={'white'} />
-         
-                            <Text style={styles.headerText}>{this.props.navigation.state.params.name}</Text>
                             
+                            <Text style={styles.headerText}>{this.props.navigation.state.params.name}</Text>
+                            {this.showStatus()}
+
     
     
                         </View>
@@ -166,6 +178,7 @@ class Chat extends Component {
                 }}
                 />
       </View>
+      </TouchableWithoutFeedback>
         );
     }
 }
@@ -187,7 +200,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#0b2441'
     },
     headerInner: {
-      flex: 1,
+      flex: 0.9,
+      alignItems:'center',
       backgroundColor: 'transparent',
       flexDirection: 'row'
     },
@@ -196,7 +210,16 @@ const styles = StyleSheet.create({
         flex: 1,
         textAlign: 'center',
         backgroundColor: 'transparent',
-        fontSize: 19,
+        fontSize: 17,
+        color: 'white',
+        fontWeight: '400'
+    },
+    headerText2: {
+        flexDirection: 'row',
+        flex: 1,
+        textAlign: 'center',
+        backgroundColor: 'transparent',
+        fontSize: 14,
         color: 'white',
         fontWeight: '400'
     },

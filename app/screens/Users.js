@@ -1,8 +1,6 @@
 //import liraries
 import React, { Component } from "react";
-import themereducer from '../../store';
 import PropTypes from 'prop-types';
-
 import {
   View,
   StyleSheet,
@@ -11,11 +9,13 @@ import {
   Image,
   TouchableOpacity,
   Platform,
-  PushNotificationIOS,
   AsyncStorage,
   TextInput,
-  StatusBar
+  StatusBar,
+  AppState
 } from "react-native";
+import { DeviceEventEmitter } from 'react-native'
+
 import firebase from "react-native-firebase";
 import Spinner from "react-native-loading-spinner-overlay";
 import { PermissionsAndroid } from "react-native";
@@ -27,7 +27,6 @@ import {Text} from "native-base";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as Actions from '../../actions';
-var db = 'https://unichatio-f63db.firebaseio.com/Accounts/'
 function geoFence(lat1, lon1, lat2, lon2) {
   var R = 6371; // km
   var dLat = toRad(lat2 - lat1);
@@ -61,16 +60,19 @@ function toRad(Value) {
 
   constructor(props) {
     super(props);
-    
+
 
     this.state = {
       isFetching:false,
       colors:this.props.colors,
+      filterText: '',
       visible: true,
       online: "#44bd32",
       background:'white',
       modalVisible: false,
+      openSearch:false,
       store: [],
+      appState: AppState.currentState,
       message: MSG1
     };
     this.userR = firebase.database().ref("Accounts/");
@@ -82,13 +84,70 @@ function toRad(Value) {
 
     });
   }
-   componentDidMount() {
-     
+
+
+async updateStatus(){
+  await firebase.auth().onAuthStateChanged(user => {
+  if (user) {
+        var user = firebase.auth().currentUser;
+        var database = firebase.database();
+                database.ref('Accounts/'+user.uid).update({
+                    online : true
+                  });
+
+                }})
+    }
+   
+  
+    async updateStatusFalse(){
+      await firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+            var user = firebase.auth().currentUser;
+            var database = firebase.database();
+                    database.ref('Accounts/'+user.uid).update({
+                        online : false
+                      });
+    
+                    }})
+        }
+       
+
+
+    componentDidMount() {
+
+     this.updateStatus()
         this.interval = setInterval(() => {
       this.checkLocation();
     }, 120000);
-  }
+    
+    DeviceEventEmitter.addListener(
+      'ON_HOME_BUTTON_PRESSED',
+      async () => {
+        console.log('You tapped the home button!')
+        var user = firebase.auth().currentUser;
+        console.log(user)
+            await firebase.database().ref('Accounts/'+user.uid).update({
+                online : false
+              });
+     })
+   
 
+   /*  this.props.navigation.addListener('willBlur', (route) => { 
+      var user = firebase.auth().currentUser;
+      var database = firebase.database();
+              database.ref('Accounts/'+user.uid).update({
+                  online : false
+                });  })
+  
+                this.props.navigation.addListener('willFocus', (route) => { 
+                  this.updateStatus()
+               })
+   */
+              }
+
+  _onChangeFilterText = (filterText) => {
+    this.setState({filterText});
+  };
   checkLocation() {
     navigator.geolocation.getCurrentPosition(
       position => {
@@ -117,9 +176,17 @@ function toRad(Value) {
     );
   }
 
+ 
   componentWillUnmount() {
     console.log("unmounted");
+    var user = firebase.auth().currentUser;
+    var database = firebase.database();
+            database.ref('Accounts/'+user.uid).update({
+                online : false
+              });
+
   }
+
   roleChip(role){
     if(role == 'Teacher'){
       return <View style={{left:13,flexDirection:'row',alignSelf:'flex-start',backgroundColor:'#0abde3',padding:3,borderRadius:4}}>
@@ -224,23 +291,7 @@ function toRad(Value) {
       );
     }
   }
-  async changecolors(){
-
-    var payload = {
-    colorprimary:'#2A3963',
-    colorsecondary:'#0b2441',
-    textlight:'yellow',
-    textdark:'white',
-    background:'#0b2441',
-    chatbackground:'#F2F9FF'
-  }
- await this.props.changeTheme(payload)
-  this.setState({
-    colors:this.props.colors,
-
-  });
-    console.log('Updated:',this.state.colors)
-}
+  
 
 async onRefresh() {
   this.setState({ isFetching: true });
@@ -252,10 +303,51 @@ async onRefresh() {
     this.setState({ online: "#00b894" });
   };
   render() {
+    const filterRegex = new RegExp(String(this.state.filterText), 'i');
+    const filter = (item) => (
+      filterRegex.test(item.name) 
+    );
+    const filteredData = this.state.store.filter(filter);
     return (
           <View style={{flex:1,backgroundColor:'red'}}>
             <View style={styles.header}>
-                        <View style={styles.headerInner}>
+                       {this.state.openSearch ?  
+                        <TextInput  
+        
+                        autoFocus={true}
+                        placeholder="Search"                        
+                      selectionColor="#a5b1c2"
+                      returnKeyType="search"
+                      textBreakStrategy="highQuality"
+                       underlineColorAndroid='transparent'
+                       autoCorrect={false}
+                       blurOnSubmit={true}
+                       //onSubmitEditing={()=>this.onSubmit()}
+                       //autoCapitalize='none'
+                       placeholderTextColor="#fefefe"
+                       onChangeText={this._onChangeFilterText}
+                       placeholder='Search..'
+                       style={{height:'80%',
+                       justifyContent:'center',
+                           textDecorationLine:'none',
+                           textDecorationColor:'transparent',
+                           backgroundColor:'transparent',
+                           paddingHorizontal:16,
+                           marginHorizontal:10,
+                           borderRadius:7,
+                           color:'#fff',
+                           fontWeight:'400',
+                           alignItems:'center',
+                           width:'80%',
+                           //position:'relative',
+                           fontStyle:'normal',
+                           fontSize:15,
+                              
+                       }} />
+                        
+                        
+                       : 
+                       <View style={styles.headerInner}>
     
     
                         <Icon name="menu" size={26} onPress={()=>this.props.navigation.navigate('DrawerOpen')} color={'white'} />
@@ -264,6 +356,10 @@ async onRefresh() {
                             
     
     
+                        </View>
+                       }
+                        <View>
+                        <Icon name="search" size={24} onPress={()=>this.setState({openSearch:!this.state.openSearch})} color={'white'} />
                         </View>
                     </View>
           <View style={{ flex: 1,
@@ -333,7 +429,7 @@ async onRefresh() {
               <FlatList
                   extraData={this.props}
                 keyExtractor={(item, index) => index.toString()}
-                data={this.state.store}
+                data={filteredData}
                 onRefresh={() => this.onRefresh()}
                 refreshing={this.state.isFetching}
                 showsVerticalScrollIndicator={false}
@@ -345,7 +441,8 @@ async onRefresh() {
                         name: item.name,
                         goid: item.id,
                         gomail: item.email,
-                        goimage: item.image
+                        goimage: item.image,
+                        online:item.status
                       })
                     }
                     style={{
@@ -453,7 +550,7 @@ headerInner: {
   },
   headerText: {
     flexDirection: 'row',
-    flex: 0.9,
+    flex: 1,
     textAlign: 'center',
     backgroundColor: 'transparent',
     fontSize: 19,
