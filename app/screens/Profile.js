@@ -1,7 +1,7 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet,Dimensions,Linking,ImageBackground,ActivityIndicator, Button,StatusBar,Image,TouchableOpacity,TextInput,Alert,AsyncStorage,Platform,TouchableWithoutFeedback } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Feather';
 import { Container, Header, Content, Thumbnail,H1,H2,H3 } from 'native-base';
 import Drawer from 'react-native-drawer'
 import Register from './Register';
@@ -230,6 +230,16 @@ else {
 
         return (
          <View style={styles.container}>
+
+
+         <View style={styles.header}>
+                        <View style={styles.headerInner}>
+    
+    
+                        <Icon name="arrow-left" size={26} onPress={()=>this.props.navigation.pop()} color={'white'} />
+                            <Text style={styles.headerText}>Profile</Text>
+                        </View>
+                    </View>
             <View style={{alignItems:'center',backgroundColor:'white', paddingBottom:65,borderBottomEndRadius:window.width-230,borderBottomStartRadius:window.width-230,width:'100%'}}>
             <View style={{paddingTop:20}}>
             
@@ -347,13 +357,13 @@ else {
             <View style={{width:'100%',paddingVertical:10,flexDirection:'row',alignItems:'center'}}>
             <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
                 <TouchableOpacity style={{width:60,height:60,borderRadius:30,backgroundColor:'#ecf0f1',alignItems:'center',justifyContent:'center'}}>
-                <Icon name="cog" onPress={()=>this.setState({editview:true})} size={23} color="#bdc3c7" />  
+                <Icon name="settings" onPress={()=>this.props.navigation.navigate('Settings')} size={23} color="#bdc3c7" />  
                 </TouchableOpacity>
             </View>
                 <View  style={styles.separator} />
             <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
                 <TouchableOpacity onPress={()=>this.setState({editview:true})} activeOpacity={0.9} style={{width:60,height:60,borderRadius:30,backgroundColor:'#273c75',alignItems:'center',justifyContent:'center'}}>
-                <Icon name="pencil"  size={23} color="#fff" />  
+                <Icon name="edit-2"  size={23} color="#fff" />  
                 </TouchableOpacity>
             </View>
             </View>
@@ -414,6 +424,50 @@ const styles = StyleSheet.create({
         height:500,
         position:'absolute'
     },
+    headerText: {
+        flexDirection: 'row',
+        flex: 0.9,
+        textAlign: 'center',
+        backgroundColor: 'transparent',
+        fontSize: 19,
+        color: 'white',
+        fontWeight: '400'
+    },
+      headerPop: {
+        height: 60,
+        paddingHorizontal: 13,
+        alignItems: "center",
+    
+        justifyContent: "center",
+        marginTop: Platform.OS == "ios" ? 20 : 0,
+        flexDirection: "row",
+    
+        backgroundColor: "white"
+      },
+      header: {
+        height: 50,
+        paddingHorizontal: 13,
+        alignItems: 'center',
+        //justifyContent: 'center',
+        marginTop: Platform.OS == "ios" ? 20 : 0,
+        flexDirection: 'row',
+    
+        backgroundColor: '#0b2441'
+    },
+    headerInner: {
+      flex: 1,
+      backgroundColor: 'transparent',
+      flexDirection: 'row'
+    },
+      headerTextPop: {
+        alignSelf:'center',
+        marginHorizontal: 5,
+        paddingVertical:7,
+        backgroundColor: "transparent",
+        fontSize: 25,
+        color: "#222f3e",
+        fontWeight: "400"
+      },
     input: {
 
         height: 40,

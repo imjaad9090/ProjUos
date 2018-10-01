@@ -104,6 +104,18 @@ async changecolorslite(){
   
 }
 
+async changecolorsFancy(){
+  var payload = {
+    colorprimary:'#2A3963',
+    colorsecondary:'#0b2441',
+    textlight:'yellow',
+    textdark:'#fff',
+    background:'#706fd3',
+    chatbackground:'#F2F9FF'
+  }
+ await this.props.changeTheme(payload)
+}
+
     render() {
         return (
             <View style={styles.container}>
@@ -163,8 +175,10 @@ async changecolorslite(){
               </Left>
               <Body style={{flexDirection:'row'}}>
             
-              <TouchableOpacity onPress={()=>this.changecolorslite()} activeOpacity={0.9} style={{backgroundColor:'#F2F9FF',width:30,height:30,borderRadius:15,padding:8}} />
               <TouchableOpacity onPress={()=>this.changecolors()} activeOpacity={0.9} style={{marginHorizontal:13,backgroundColor:'#0F3057',width:30,height:30,borderRadius:15,padding:8}} />
+              <TouchableOpacity onPress={()=>this.changecolorslite()} activeOpacity={0.9} style={{backgroundColor:'#F2F9FF',width:30,height:30,borderRadius:15,padding:8}} />
+
+              <TouchableOpacity onPress={()=>this.changecolorsFancy()} activeOpacity={0.9} style={{marginHorizontal:13,backgroundColor:'#706fd3',width:30,height:30,borderRadius:15,padding:8}} />
 
 
 

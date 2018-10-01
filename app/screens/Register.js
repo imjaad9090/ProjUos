@@ -81,6 +81,9 @@ else {
             value: 'Student',
           }, {
             value: 'Teacher',
+          },
+          {
+            value: 'Management',
           }];
         return (
         <KeyboardAvoidingView behavior="padding">

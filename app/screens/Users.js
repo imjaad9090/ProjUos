@@ -15,6 +15,7 @@ import {
   AppState
 } from "react-native";
 import { DeviceEventEmitter } from 'react-native'
+var _ = require('lodash')
 
 import firebase from "react-native-firebase";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -114,7 +115,7 @@ async updateStatus(){
 
 
     componentDidMount() {
-
+      console.log(this.props.sortby)
      this.updateStatus()
         this.interval = setInterval(() => {
       this.checkLocation();
@@ -135,17 +136,17 @@ async updateStatus(){
     }
    
 
-   /*  this.props.navigation.addListener('willBlur', (route) => { 
-      var user = firebase.auth().currentUser;
-      var database = firebase.database();
-              database.ref('Accounts/'+user.uid).update({
-                  online : false
-                });  })
+    this.props.navigation.addListener('willBlur', (route) => { 
+      this.updateStatusFalse();
+
+              
+              })
   
                 this.props.navigation.addListener('willFocus', (route) => { 
-                  this.updateStatus()
+                  this.updateStatus(); 
+
                })
-   */
+   
               }
 
   _onChangeFilterText = (filterText) => {
@@ -198,7 +199,7 @@ async updateStatus(){
           </Text>
           </View>
     }
-    else {
+    else if(role == 'Student')  {
       return <View style={{left:13,flexDirection:'row',alignSelf:'flex-start',backgroundColor:'#1abc9c',padding:3,borderRadius:4}}> 
       <Text style={{ color: "#fff", fontSize: 12 }}>
                     Student
@@ -206,6 +207,15 @@ async updateStatus(){
                   </View>
       
     }
+    else if(role == 'Management') {
+      return <View style={{left:13,flexDirection:'row',alignSelf:'flex-start',backgroundColor:'#ffb142',padding:3,borderRadius:4}}> 
+      <Text style={{ color: "#fff", fontSize: 12 }}>
+                    Management
+                  </Text>
+                  </View>
+      
+    }
+
   }
 
   showUsers() {
@@ -260,7 +270,10 @@ async updateStatus(){
             console.log(mid);
             //console.log(this.state.store)
           });
-          this.setState({ store: mid, visible: false});
+
+          var dataSorted =  _.sortBy(mid, this.props.sortby);
+
+          this.setState({ store: dataSorted, visible: false});
         });
       }
     });
@@ -612,7 +625,7 @@ Users.defaultProps = {
   user: null,
 };
 const mapStateToProps = (state) => {
-  return { colors: state.theme.appTheme };
+  return { colors: state.theme.appTheme,sortby:state.theme.sortType };
 }
 
 

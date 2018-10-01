@@ -1,5 +1,5 @@
-import { changeTheme ,saveUser} from './theme';
+import { changeTheme ,saveUser,changesortBy} from './theme';
 
 export {
-    changeTheme,saveUser
+    changeTheme,saveUser,changesortBy
 };  

@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet,TouchableOpacity,ScrollView,Platform,Linking,Switch } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from "react-native-vector-icons/Feather";
-import { CheckBox } from 'react-native-elements'
+import { CheckBox } from 'react-native-elements';
+import Modal from "react-native-modal";
+
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -27,11 +29,23 @@ class Settings extends Component {
         this.state={
             checked:false,
             switch:false,
+            switch2:false,
+            modalVisible:false
         }
 
     }
 
-
+    //changesortBy
+    changeType(props){
+        if(props == 'name'){
+            this.props.changesortBy('name')
+            this.setState({switch1:true,switch2:false})
+        }
+        else if(props == 'role') {
+            this.props.changesortBy('role')
+            this.setState({switch1:false,switch2:true})
+        }
+    }
     componentDidMount(){
     }
 
@@ -44,6 +58,74 @@ class Settings extends Component {
             <Text style={styles.headerText}>Settings</Text>
             </View>
             </View>
+
+            <Modal
+              isVisible={this.state.modalVisible}
+              //avoidKeyboard={true}
+              onBackButtonPress={() => this.setState({ modalVisible: false })}
+              onBackdropPress={() => this.setState({ modalVisible: false })}
+            >
+              <View
+                style={{
+                  alignSelf: "center",
+                  width: "95%",
+                  height: "50%",
+                  backgroundColor: "white",
+                  borderColor: "#576574",
+                  borderWidth: 3
+                }}
+              >
+                <View style={styles.headerPop}>
+    
+                </View>
+    
+                <View
+                  style={{
+                    width: "85%",
+                    paddingVertical: 3,
+                    flexDirection: "column",
+                    top: 10,
+                    alignSelf: "center"
+                  }}
+                >
+    
+                  <Text style={{ fontSize: 17,textAlign:'center',color: "#0b2441" }}>
+                    Devs can be contacted at this contact email.
+                    unichat.team@gmail.com
+                  </Text>
+
+   
+                </View>
+    
+                <TouchableOpacity
+                  onPress={() => this.setState({modalVisible:false})}
+                  activeOpacity={0.9}
+                  style={{
+                    position: "absolute",
+                    width: "100%",
+                    paddingVertical: 10,
+                    backgroundColor: "#576574",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    bottom: 0
+                  }}
+                >
+                  <Text style={{ color: "white" }}>Done</Text>
+                </TouchableOpacity>
+              </View>
+            </Modal>
+
+
+
+
+
+
+
+
+
+
+
+
             <View style={{flex: 1,
         padding:9,
         justifyContent: 'space-around',
@@ -56,7 +138,7 @@ class Settings extends Component {
         
         <Text style={{color:'#576574',fontSize:15,fontWeight:'500'}}>Contact and Support</Text>
 
-            <TouchableOpacity activeOpacity={0.9} onPress={()=>console.log('contact')}  style={{marginVertical:7,shadowColor: "#000000",shadowOpacity: 0.8,shadowRadius: 2,shadowOffset: {height: 1,width: 1},width:'100%',
+            <TouchableOpacity activeOpacity={0.9} onPress={()=>this.setState({modalVisible:true})}  style={{marginVertical:7,shadowColor: "#000000",shadowOpacity: 0.8,shadowRadius: 2,shadowOffset: {height: 1,width: 1},width:'100%',
                 alignItems:'center',justifyContent:'center',paddingVertical:8,backgroundColor:'white',borderRadius:3}}>
                 <Text style={{color:'#576574',fontSize:15,fontWeight:'400'}}>Contact</Text>
             </TouchableOpacity>
@@ -66,9 +148,9 @@ class Settings extends Component {
                 <Text style={{color:'#576574',fontSize:15,fontWeight:'400'}}>Report</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity activeOpacity={0.9} onPress={()=>Linking.openURL('https://play.google.com/store?hl=en')}  style={{marginVertical:7,shadowColor: "#000000",shadowOpacity: 0.8,shadowRadius: 2,shadowOffset: {height: 1,width: 1},width:'100%',
+            <TouchableOpacity activeOpacity={0.9} onPress={()=>Linking.openURL('https://github.com/imjaad9090/ProjUos/blob/master/app/Privacy.txt')}  style={{marginVertical:7,shadowColor: "#000000",shadowOpacity: 0.8,shadowRadius: 2,shadowOffset: {height: 1,width: 1},width:'100%',
                 alignItems:'center',justifyContent:'center',paddingVertical:8,backgroundColor:'white',borderRadius:3}}>
-                <Text style={{color:'#576574',fontSize:15,fontWeight:'400'}}>Rate Application</Text>
+                <Text style={{color:'#576574',fontSize:15,fontWeight:'400'}}>Privacy Policy</Text>
             </TouchableOpacity>
 
                         
@@ -89,8 +171,8 @@ class Settings extends Component {
                     style={{width:60}}
                     tintColor='#0b2441'
                     thumbTintColor='white'
-                    value={this.state.switch}
-                    onValueChange={()=>this.setState({switch:!this.state.switch})}
+                    value={this.state.switch1}
+                    onValueChange={()=>this.changeType('name')}
                     
                     
                     />                    
@@ -106,8 +188,8 @@ class Settings extends Component {
                     style={{width:60}}
                     tintColor='#0b2441'
                     thumbTintColor='white'
-                    value={this.state.switch}
-                    onValueChange={()=>this.setState({switch:!this.state.switch})}
+                    value={this.state.switch2}
+                    onValueChange={()=>this.changeType('role')}
                     
                     
                     />                    
