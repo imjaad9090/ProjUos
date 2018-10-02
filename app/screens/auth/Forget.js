@@ -1,11 +1,7 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, Text,Keyboard,TouchableWithoutFeedback,StyleSheet,ScrollView,Button,TouchableOpacity,KeyboardAvoidingView,TextInput,Image,ImageBackground,StatusBar,Alert,AsyncStorage } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import Drawer from 'react-native-drawer'
-import PropTypes from 'prop-types';
-import CarrierInfo from 'react-native-carrier-info';
-import LinearGradient from 'react-native-linear-gradient';
+
 import firebase from 'react-native-firebase';
 // create a component
 class Forget extends Component {
@@ -50,8 +46,8 @@ else {
         return (
             <KeyboardAvoidingView behavior="padding">
 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <ImageBackground source={require('./Images/23.png')}  style={styles.bgImage}>
-          <Image source={require('./Images/unichite.png')} style={{width:200,height:100,resizeMode:'contain',bottom:80}}/>
+            <ImageBackground source={require('../Images/23.png')}  style={styles.bgImage}>
+          <Image source={require('../Images/unichite.png')} style={{width:200,height:100,resizeMode:'contain',bottom:80}}/>
            <TextInput
                 style={styles.input}
                 selectionColor={'#3d1767'}

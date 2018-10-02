@@ -1,14 +1,20 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet,Platform,TouchableWithoutFeedback,Keyboard } from 'react-native';
 import { GiftedChat } from "react-native-gifted-chat";
 import firebase from "react-native-firebase";
-import md5 from './lib/md5';
 import LinearGradient from 'react-native-linear-gradient';
 import Spinner from 'react-native-loading-spinner-overlay';
-
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as Actions from '../../../actions';
 // create a component
-class CS extends Component {
+class Public extends Component {
+
+    static navigationOptions =({ navigation }) =>{
+        drawerLockMode: 'locked-closed'
+    
+    }
 
     constructor(props){
         super(props)
@@ -19,20 +25,19 @@ class CS extends Component {
             messages:[],
             id:user.uid
           };
-        this.chatRef = firebase.database().ref().child('CS/');
+        this.chatRef = firebase.database().ref().child('Lounge/');
         this.chatRefData = this.chatRef.orderByChild('order')
         this.onSend = this.onSend.bind(this);
     }
 
 
     static navigationOptions=({ navigation })=>({
-        title: 'Computer Science',  
-        //headerTintColor: 'white', 
+        title: 'Lounge fu',  
         headerStyle:{
-        backgroundColor:'#eee'
+        backgroundColor:'#F2F9FF'
         },
         headerTitleStyle:{
-            color:'black'
+            color:'#2a0845'
         }
     })
 
@@ -43,15 +48,19 @@ class CS extends Component {
         const { params } = this.props.navigation.state;
         var user = firebase.auth().currentUser;
         chatRef.on('value', (snap) => {
+
             // get children as an array
             var items = [];
             snap.forEach((child) => {
+               // console.log(child)
                 items.push({
-                    _id: child.val().createdAt,
-                    text: child.val().text,
-                    name: child.val().name,
-                    avatar: child.val().userimage, 
                     createdAt: new Date(child.val().createdAt),
+                    name: child.val().name,
+                    text: child.val().text,
+                    _id: child.val().createdAt,
+                    
+                    
+                    avatar: child.val().userimage, 
                     user: {
                         //aded
                         _id: child.val().uid,
@@ -59,6 +68,7 @@ class CS extends Component {
                         avatar: child.val().userimage, 
 
                     }
+                
                 });
             });
 
@@ -133,18 +143,33 @@ class CS extends Component {
 
     render() {
         return (
-            <LinearGradient colors={['#07a585','#076585']} style={styles.container}>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+
+            <View style={{  flex: 1,
+                backgroundColor:this.props.colors.background}}>
+             <View style={styles.header}>
+                    <View style={styles.headerInner}>
+
+
+                        <Text style={styles.headerText}>Public Feed</Text>
+                        
+
+
+                    </View>
+                </View>
          <Spinner visible={this.state.visible}/>
 
             <GiftedChat
                 messages={this.state.messages}
                 placeholder="Type a message.."
                 onSend={this.onSend.bind(this)}
+            
                 user={{
                     _id: this.state.id,
                 }}
                 />
-      </LinearGradient>
+      </View>
+      </TouchableWithoutFeedback>
         );
     }
 }
@@ -153,9 +178,43 @@ class CS extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    backgroundColor:'#F2F9FF'
+    },
+    header: {
+        height: 50,
+        paddingHorizontal: 13,
+        alignItems: 'center',
+        //justifyContent: 'center',
+        marginTop: Platform.OS == "ios" ? 20 : 0,
+        flexDirection: 'row',
     
+        backgroundColor: '#0b2441'
+    },
+    headerInner: {
+      flex: 1,
+      backgroundColor: 'transparent',
+      flexDirection: 'row'
+    },
+    headerText: {
+        flexDirection: 'row',
+        flex: 1,
+        textAlign: 'center',
+        backgroundColor: 'transparent',
+        fontSize: 19,
+        color: 'white',
+        fontWeight: '400'
     },
 });
 
 //make this component available to the app
-export default CS;
+const mapStateToProps = (state) => {
+    return { colors: state.theme.appTheme };
+  }
+  
+  
+  function mapDispatchToProps(dispatch) {
+    return bindActionCreators(Actions, dispatch);
+  }
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(Public);
+  

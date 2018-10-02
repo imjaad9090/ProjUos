@@ -2,8 +2,7 @@
 import React, { Component } from 'react';
 import { View,TouchableWithoutFeedback, Text, StyleSheet,Picker,Keyboard,Button,TouchableOpacity,KeyboardAvoidingView,TextInput,Alert,AsyncStorage,ImageBackground } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import Drawer from 'react-native-drawer'
-import PropTypes from 'prop-types';
+
 import firebase from 'react-native-firebase';
 import { Dropdown } from 'react-native-material-dropdown';
 
@@ -88,7 +87,7 @@ else {
         return (
         <KeyboardAvoidingView behavior="padding">
            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-           <ImageBackground source={require('./Images/23.png')}  style={styles.bgImage}>
+           <ImageBackground source={require('../Images/23.png')}  style={styles.bgImage}>
 
         <View style={{alignSelf:'center',bottom:10}}>
 

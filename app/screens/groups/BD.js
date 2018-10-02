@@ -1,14 +1,13 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet,Platform } from 'react-native';
 import { GiftedChat } from "react-native-gifted-chat";
 import firebase from "react-native-firebase";
-import md5 from './lib/md5';
 import LinearGradient from 'react-native-linear-gradient';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 // create a component
-class PT extends Component {
+class BD extends Component {
 
     constructor(props){
         super(props)
@@ -19,14 +18,14 @@ class PT extends Component {
             messages:[],
             id:user.uid
           };
-        this.chatRef = firebase.database().ref().child('PT/');
+        this.chatRef = firebase.database().ref().child('BD/');
         this.chatRefData = this.chatRef.orderByChild('order')
         this.onSend = this.onSend.bind(this);
     }
 
 
     static navigationOptions=({ navigation })=>({
-        title: 'Physical Therapy',  
+        title: 'Business Department',  
         //headerTintColor: 'white', 
         headerStyle:{
         backgroundColor:'#eee'
@@ -133,7 +132,17 @@ class PT extends Component {
 
     render() {
         return (
-            <LinearGradient colors={['#ad5389','#3c1053']} style={styles.container}>
+            <View style={styles.container}>
+             <View style={styles.header}>
+                    <View style={styles.headerInner}>
+
+
+                        <Text style={styles.headerText}>Business</Text>
+                        
+
+
+                    </View>
+                </View>
          <Spinner visible={this.state.visible}/>
 
             <GiftedChat
@@ -144,7 +153,7 @@ class PT extends Component {
                     _id: this.state.id,
                 }}
                 />
-      </LinearGradient>
+      </View>
         );
     }
 }
@@ -153,9 +162,34 @@ class PT extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor:'#F2F9FF'
     
+    },
+    header: {
+        height: 50,
+        paddingHorizontal: 13,
+        alignItems: 'center',
+        //justifyContent: 'center',
+        marginTop: Platform.OS == "ios" ? 20 : 0,
+        flexDirection: 'row',
+    
+        backgroundColor: '#0b2441'
+    },
+    headerInner: {
+      flex: 1,
+      backgroundColor: 'transparent',
+      flexDirection: 'row'
+    },
+    headerText: {
+        flexDirection: 'row',
+        flex: 1,
+        textAlign: 'center',
+        backgroundColor: 'transparent',
+        fontSize: 19,
+        color: 'white',
+        fontWeight: '400'
     },
 });
 
 //make this component available to the app
-export default PT;
+export default BD;

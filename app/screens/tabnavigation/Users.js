@@ -27,7 +27,7 @@ const MSG2 = 'Could not find location, make sure GPS is enabled.'
 import {Text} from "native-base";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as Actions from '../../actions';
+import * as Actions from '../../../actions';
 function geoFence(lat1, lon1, lat2, lon2) {
   var R = 6371; // km
   var dLat = toRad(lat2 - lat1);
@@ -295,14 +295,14 @@ async updateStatus(){
     if (props == "true") {
       return (
         <Image
-          source={require("./Images/online.png")}
+          source={require("../Images/online.png")}
           style={{ width: 10, height: 10, resizeMode: "contain" }}
         />
       );
     } else if (props == "false") {
       return (
         <Image
-          source={require("./Images/offline.png")}
+          source={require("../Images/offline.png")}
           style={{ width: 10, height: 10, resizeMode: "contain" }}
         />
       );

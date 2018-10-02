@@ -1,21 +1,13 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Platform,TouchableWithoutFeedback,Keyboard } from 'react-native';
+import { View, Text, StyleSheet,Platform } from 'react-native';
 import { GiftedChat } from "react-native-gifted-chat";
 import firebase from "react-native-firebase";
-import md5 from './lib/md5';
 import LinearGradient from 'react-native-linear-gradient';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import * as Actions from '../../actions';
-// create a component
-class Public extends Component {
 
-    static navigationOptions =({ navigation }) =>{
-        drawerLockMode: 'locked-closed'
-    
-    }
+// create a component
+class CS extends Component {
 
     constructor(props){
         super(props)
@@ -26,19 +18,20 @@ class Public extends Component {
             messages:[],
             id:user.uid
           };
-        this.chatRef = firebase.database().ref().child('Lounge/');
+        this.chatRef = firebase.database().ref().child('CS/');
         this.chatRefData = this.chatRef.orderByChild('order')
         this.onSend = this.onSend.bind(this);
     }
 
 
     static navigationOptions=({ navigation })=>({
-        title: 'Lounge fu',  
+        title: 'Computer Science',  
+        //headerTintColor: 'white', 
         headerStyle:{
-        backgroundColor:'#F2F9FF'
+        backgroundColor:'#eee'
         },
         headerTitleStyle:{
-            color:'#2a0845'
+            color:'black'
         }
     })
 
@@ -49,19 +42,15 @@ class Public extends Component {
         const { params } = this.props.navigation.state;
         var user = firebase.auth().currentUser;
         chatRef.on('value', (snap) => {
-
             // get children as an array
             var items = [];
             snap.forEach((child) => {
-               // console.log(child)
                 items.push({
-                    createdAt: new Date(child.val().createdAt),
-                    name: child.val().name,
-                    text: child.val().text,
                     _id: child.val().createdAt,
-                    
-                    
+                    text: child.val().text,
+                    name: child.val().name,
                     avatar: child.val().userimage, 
+                    createdAt: new Date(child.val().createdAt),
                     user: {
                         //aded
                         _id: child.val().uid,
@@ -69,7 +58,6 @@ class Public extends Component {
                         avatar: child.val().userimage, 
 
                     }
-                
                 });
             });
 
@@ -144,15 +132,12 @@ class Public extends Component {
 
     render() {
         return (
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-
-            <View style={{  flex: 1,
-                backgroundColor:this.props.colors.background}}>
+            <View  style={styles.container}>
              <View style={styles.header}>
                     <View style={styles.headerInner}>
 
 
-                        <Text style={styles.headerText}>Public Feed</Text>
+                        <Text style={styles.headerText}>Computer Science</Text>
                         
 
 
@@ -164,13 +149,11 @@ class Public extends Component {
                 messages={this.state.messages}
                 placeholder="Type a message.."
                 onSend={this.onSend.bind(this)}
-            
                 user={{
                     _id: this.state.id,
                 }}
                 />
       </View>
-      </TouchableWithoutFeedback>
         );
     }
 }
@@ -179,7 +162,8 @@ class Public extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    backgroundColor:'#F2F9FF'
+        backgroundColor:'#F2F9FF'
+    
     },
     header: {
         height: 50,
@@ -208,14 +192,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-const mapStateToProps = (state) => {
-    return { colors: state.theme.appTheme };
-  }
-  
-  
-  function mapDispatchToProps(dispatch) {
-    return bindActionCreators(Actions, dispatch);
-  }
-  
-  export default connect(mapStateToProps, mapDispatchToProps)(Public);
-  
+export default CS;

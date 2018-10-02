@@ -1,15 +1,9 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, Text,Keyboard,TouchableWithoutFeedback,StyleSheet,ScrollView,Button,TouchableOpacity,KeyboardAvoidingView,TextInput,Image,ImageBackground,StatusBar,Alert,AsyncStorage,ActivityIndicator } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import Drawer from 'react-native-drawer'
-import PropTypes from 'prop-types';
-import CarrierInfo from 'react-native-carrier-info';
-import LinearGradient from 'react-native-linear-gradient';
+
 import firebase from 'react-native-firebase';
-import { TextField } from 'react-native-material-textfield';
-import GeoFencing from 'react-native-geo-fencing';
-import { MaterialIndicator} from 'react-native-indicators';
+
 // create a component
 class Login extends React.Component {
     static navigationOptions = {
@@ -90,8 +84,8 @@ class Login extends React.Component {
     render() {
         return (
 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <ImageBackground source={require('./Images/23.png')}  style={styles.bgImage}>
-          <Image source={require('./Images/unichite.png')} style={{width:200,height:100,resizeMode:'contain',bottom:80}}/>
+            <ImageBackground source={require('../Images/23.png')}  style={styles.bgImage}>
+          <Image source={require('../Images/unichite.png')} style={{width:200,height:100,resizeMode:'contain',bottom:80}}/>
 
           <KeyboardAvoidingView style={{width:'100%',alignItems:'center'}} behavior="padding">
 

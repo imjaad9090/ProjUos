@@ -2,11 +2,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet,Dimensions,Linking,ImageBackground,ActivityIndicator, Button,StatusBar,Image,TouchableOpacity,TextInput,Alert,AsyncStorage,Platform,TouchableWithoutFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import { Container, Header, Content, Thumbnail,H1,H2,H3 } from 'native-base';
-import Drawer from 'react-native-drawer'
-import Register from './Register';
-import PropTypes from 'prop-types';
-import TimeAgo from 'react-native-timeago';
+
 import firebase from 'react-native-firebase';
 import ImagePicker from 'react-native-image-crop-picker';
 import LinearGradient from 'react-native-linear-gradient';

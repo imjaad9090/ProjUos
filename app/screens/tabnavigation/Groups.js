@@ -5,7 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icon from "react-native-vector-icons/Feather";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as Actions from '../../actions';
+import * as Actions from '../../../actions';
 // create a component
 class Groups extends Component {
 
@@ -48,20 +48,20 @@ class Groups extends Component {
         alignItems: 'center',
         backgroundColor: this.props.colors.background,}}>
             
-                <LinearGradient  colors={['#07a585','#076585']} style={{width:'100%',height:140,alignItems:'center',justifyContent:'center',borderColor:'rgba(0,0,0,0.2)',borderWidth:2}}>
-                <Text style={{color:'white',fontSize:17,fontWeight:"bold",alignSelf:'center',marginVertical:6}}>Computer Science</Text>
-                <Text onPress={()=>this.props.navigation.navigate('cs')} style={{color:'white',alignSelf:'center'}}>Tap to join computer science chat.</Text>
-            </LinearGradient>
+                <View style={{backgroundColor:'#07a585',padding:3,width:144,height:144,borderRadius:72,flexWrap:'wrap',alignItems:'center',justifyContent:'center',borderColor:'rgba(0,0,0,0.2)',borderWidth:2}}>
+                <Text style={{color:'white',fontSize:15,fontWeight:"bold",textAlign:'center',alignSelf:'center',marginVertical:6}}>Computer Science</Text>
+                <Text onPress={()=>this.props.navigation.navigate('cs')} style={{textAlign:'center',color:'white',alignSelf:'center'}}>Tap to join computer science chat.</Text>
+            </View>
+            
+            <View style={{backgroundColor:'#3c1053',padding:3,width:144,height:144,borderRadius:72,flexWrap:'wrap',alignItems:'center',justifyContent:'center',borderColor:'rgba(0,0,0,0.2)',borderWidth:2}}>
+                <Text style={{color:'white',fontSize:15,fontWeight:"bold",textAlign:'center',alignSelf:'center',marginVertical:6}}>Physical Therapy</Text>
+                <Text onPress={()=>this.props.navigation.navigate('pt')} style={{textAlign:'center',color:'white',alignSelf:'center'}}>Tap to join physical therapy chat.</Text>
+            </View>
 
-            <LinearGradient colors={['#ad5389','#3c1053']} style={{width:'100%',height:140,alignItems:'center',justifyContent:'center',borderColor:'rgba(0,0,0,0.2)',borderWidth:2}}>
-                <Text style={{color:'white',fontSize:17,fontWeight:"bold",alignSelf:'center',marginVertical:6}}>Physical Therapy</Text>
-                <Text onPress={()=>this.props.navigation.navigate('pt')} style={{color:'white',alignSelf:'center'}}>Tap to join physical therapy chat.</Text>
-            </LinearGradient>
-
-            <LinearGradient colors={['#e1eec3','#f05053']} style={{width:'100%',height:140,alignItems:'center',justifyContent:'center',borderColor:'rgba(0,0,0,0.2)',borderWidth:2}}>
-                <Text style={{color:'white',fontSize:17,fontWeight:"bold",alignSelf:'center',marginVertical:6}}>Business Department</Text>
-                <Text onPress={()=>this.props.navigation.navigate('bd')} style={{color:'white',alignSelf:'center'}}>Tap to join this chat.</Text>
-            </LinearGradient>
+            <View style={{backgroundColor:'#EAB543',padding:3,width:144,height:144,borderRadius:72,flexWrap:'wrap',alignItems:'center',justifyContent:'center',borderColor:'rgba(0,0,0,0.2)',borderWidth:2}}>
+                <Text style={{color:'white',fontSize:15,fontWeight:"bold",textAlign:'center',alignSelf:'center',marginVertical:6}}>Business Department</Text>
+                <Text onPress={()=>this.props.navigation.navigate('bd')} style={{textAlign:'center',color:'white',alignSelf:'center'}}>Tap to join this chat.</Text>
+            </View>
             </View>
             </View>
            
